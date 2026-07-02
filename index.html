@@ -362,7 +362,9 @@ var GALLERY = [
   {t:"work-6", alt:"Editorial portrait, night street styling", cat:"Editorial"},
   {t:"work-7", alt:"Studio Hous editorial frame", cat:"Portrait"}
 ];
-var FORMSPREE_ENDPOINT = ""; /* paste your Formspree form URL here, e.g. https://formspree.io/f/abcwxyz  — leave "" to use email fallback */
+/* Booking inquiries POST into this Google Form → linked Google Sheet on studio@solhous.com */
+var GFORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSfkItbZbYVKJgyJ4VbdlAcnksgkI8LVgyycZ_ZgrMk2Vs4PyA/formResponse";
+var GFORM_FIELDS = { date:"entry.919456358", name:"entry.1143871970", occasion:"entry.1962162448", contact:"entry.1852360780" };
 /* ===================================================================== */
 
 (function(){
@@ -463,9 +465,13 @@ var FORMSPREE_ENDPOINT = ""; /* paste your Formspree form URL here, e.g. https:/
     var body="Day: "+d+"\nName: "+n+"\nOccasion: "+o+"\nReach me: "+contact;
     // mailto fallback link always set
     document.getElementById('mailBtn').href="mailto:studio@solhous.com?subject="+encodeURIComponent("Booking inquiry — "+(n||'new'))+"&body="+encodeURIComponent("Hi Studio Hous,\n\nI'd like to hold a date.\n\n"+body+"\n\nThank you!");
-    if(FORMSPREE_ENDPOINT){
-      fetch(FORMSPREE_ENDPOINT,{method:'POST',headers:{'Accept':'application/json'},body:new URLSearchParams({date:d,name:n,occasion:o,contact:contact})})
-        .then(function(r){ confirmView(true); })
+    if(GFORM_ACTION){
+      var fd=new URLSearchParams();
+      fd.append(GFORM_FIELDS.date,d); fd.append(GFORM_FIELDS.name,n);
+      fd.append(GFORM_FIELDS.occasion,o); fd.append(GFORM_FIELDS.contact,contact);
+      // no-cors: response is opaque, but the submission lands in the Sheet. Treat as sent.
+      fetch(GFORM_ACTION,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()})
+        .then(function(){ confirmView(true); })
         .catch(function(){ confirmView(false); });
     } else { confirmView(false); }
   }
