@@ -1,0 +1,61 @@
+import type { Metadata } from "next";
+import { Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
+import { FilmChrome } from "@/components/FilmChrome";
+import { CursorDot } from "@/components/CursorDot";
+import { Nav } from "@/components/Nav";
+import { BookingModalProvider } from "@/components/BookingModal";
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://solhous.com"),
+  // Each page sets its own complete, unique title — no shared template/suffix,
+  // matching the original site where every page's <title> was fully authored.
+  title: "Studio Hous — Editorial Portrait Photography | Greensboro, NC",
+  description:
+    "Studio Hous is an editorial portrait photography studio in Greensboro, North Carolina. Portraits, graduation, prom, personal branding, real estate, and commercial — every frame intentional. Part of the SolHous creative universe.",
+  icons: { icon: "/media/favicon.png" },
+};
+
+export const viewport = {
+  themeColor: "#0e110c",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      <body>
+        <a href="#main" className="skip">
+          Skip to content
+        </a>
+        <BookingModalProvider>
+          <Nav />
+          {children}
+        </BookingModalProvider>
+        <FilmChrome />
+        <CursorDot />
+      </body>
+    </html>
+  );
+}

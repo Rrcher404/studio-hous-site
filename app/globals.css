@@ -1,6 +1,22 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-haze: #0e110c;
+  --color-haze-2: #181c14;
+  --color-milk: #edefe0;
+  --color-body: #bcc4a8;
+  --color-olive: #a4ac8e;
+  --color-sun: #cea860;
+  --color-sand: #b9a073;
+
+  --font-serif: var(--font-cormorant), serif;
+  --font-sans: var(--font-inter), sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+}
+
 /* ============================================================
    SOLHOUS / STUDIO HOUS — shared design system
-   Extracted from the v2 single-page build. Every page inherits.
+   Ported verbatim from the static v2 build. Every page inherits.
    ============================================================ */
 :root{
   --haze:#0e110c; --haze-2:#181c14; --milk:#edefe0; --body:#bcc4a8;
@@ -16,7 +32,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .skip{position:fixed;left:-999px;top:8px;z-index:200;background:var(--sun);color:var(--haze);padding:10px 16px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;}
 .skip:focus{left:12px;}
 
-/* film layers (injected by site.js) */
+/* film layers (injected by root layout) */
 .film-grain{position:fixed;inset:0;z-index:80;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 .film-vignette{position:fixed;inset:0;z-index:78;pointer-events:none;background:radial-gradient(120% 92% at 50% 38%, transparent 48%, rgba(5,7,4,.55) 100%);}
@@ -169,7 +185,7 @@ h3.mid{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22
 .uni .tx p{color:var(--body);font-size:13.5px;line-height:1.6;}
 .uni .tx .go{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sun);display:inline-block;margin-top:14px;}
 
-/* forms (fieldnotes submission etc.) */
+/* forms (field-notes submission etc.) */
 .fform{margin-top:44px;max-width:620px;}
 .fform label{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin:26px 0 4px;}
 .fform input,.fform textarea,.fform select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--olive);padding:11px 2px;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--milk);outline:none;border-radius:0;}
@@ -198,7 +214,7 @@ footer .legal{margin-top:20px;font-size:10.5px;color:var(--olive);opacity:.7;max
 .lb .arw:hover{opacity:1;}
 .lb .prev{left:14px;} .lb .next{right:14px;}
 
-/* booking modal (markup injected by site.js) */
+/* booking modal */
 .modal{position:fixed;inset:0;z-index:130;background:rgba(6,8,4,.9);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;}
 .modal.open{display:flex;}
 .booking{position:relative;width:min(560px,100%);background:var(--haze-2);border:1px solid rgba(206,168,96,.32);}
@@ -224,6 +240,33 @@ footer .legal{margin-top:20px;font-size:10.5px;color:var(--olive);opacity:.7;max
 .shutter{position:fixed;inset:0;z-index:140;background:var(--milk);opacity:0;pointer-events:none;}
 .shutter.fire{animation:flash .26s var(--ease);}
 @keyframes flash{0%{opacity:0;}30%{opacity:.85;}100%{opacity:0;}}
+
+/* homepage-only: the video hero + haze veil (unique to /) */
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.haze-veil{position:absolute;inset:0;z-index:3;pointer-events:none;will-change:backdrop-filter;transform:translateZ(0);
+  -webkit-backdrop-filter:blur(6px) brightness(.55) saturate(.9);backdrop-filter:blur(6px) brightness(.55) saturate(.9);
+  -webkit-mask:radial-gradient(circle 320px at var(--mx,50%) var(--my,62%), transparent 0%, transparent 8%, #000 78%);
+  mask:radial-gradient(circle 320px at var(--mx,50%) var(--my,62%), transparent 0%, transparent 8%, #000 78%);}
+.hero .sunbloom{z-index:4;}
+.hero-grad{position:absolute;inset:0;z-index:5;pointer-events:none;background:linear-gradient(to bottom,rgba(8,10,6,.45),transparent 26%,transparent 46%,rgba(8,10,6,.9));}
+.hero-content{position:absolute;z-index:6;left:0;right:0;bottom:10vh;padding:0 30px;max-width:1080px;margin:0 auto;}
+.scrollcue{position:absolute;z-index:6;bottom:22px;left:30px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.55;}
+@media (prefers-reduced-motion:reduce){.haze-veil{-webkit-mask:none;mask:none;-webkit-backdrop-filter:none;backdrop-filter:none;}}
+
+/* /spaces-only, additive */
+.page-hero .cap{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive);}
+.cat .blurb{font-size:13.5px;line-height:1.6;color:var(--body);margin-bottom:16px;}
+.cat .note{font-size:12.5px;line-height:1.6;color:var(--olive);margin-top:16px;}
+
+/* /field-notes-only, additive */
+.confirm{margin-top:20px;font-size:14px;line-height:1.7;color:var(--sun);max-width:56ch;display:none;}
+.confirm.show{display:block;animation:fu .5s var(--ease);}
+.crosslink{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:30px;}
+
+/* /cosign-only, additive */
+.page-hero .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--sun);margin-top:20px;}
+.page-hero .epi{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2.4vw,25px);line-height:1.45;color:var(--milk);max-width:44ch;margin:26px auto 0;}
 
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;}
