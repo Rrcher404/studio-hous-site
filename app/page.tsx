@@ -65,7 +65,15 @@ const workTeaser = [
   },
 ];
 
-const universeCards = [
+const universeCards: {
+  href: string;
+  img: string;
+  alt: string;
+  k: string;
+  h: string;
+  p: string;
+  imgPos?: string;
+}[] = [
   {
     href: "/spaces/",
     img: "/media/studio/studio-02.jpg",
@@ -101,6 +109,7 @@ const universeCards = [
   {
     href: "/sessions/",
     img: "/media/portfolio/portraits/portrait-38.jpg",
+    imgPos: "center 20%",
     alt: "Three friends at a warm-lit hallway threshold, one in a black tuxedo flanked by two women in forest green and ivory, dressed for a formal night out.",
     k: "Book",
     h: "Sessions & pricing",
@@ -109,6 +118,7 @@ const universeCards = [
   {
     href: "/work/",
     img: "/media/portfolio/portraits/portrait-39.jpg",
+    imgPos: "center 20%",
     alt: "Two best friends in matching mustard bomber jackets sharing tea at a chrome diner table against a crushed forest-green velvet backdrop.",
     k: "Work",
     h: "The portfolio",
@@ -268,7 +278,12 @@ export default function HomePage() {
               {universeCards.map((card) => (
                 <Link key={card.href} href={card.href}>
                   <div className="im">
-                    <img src={card.img} alt={card.alt} loading="lazy" />
+                    <img
+                      src={card.img}
+                      alt={card.alt}
+                      loading="lazy"
+                      style={card.imgPos ? { objectPosition: card.imgPos } : undefined}
+                    />
                   </div>
                   <div className="tx">
                     <span className="k">{card.k}</span>
