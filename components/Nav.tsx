@@ -15,6 +15,10 @@ export function Nav() {
 
   useEffect(() => {
     if (menuOpen) closeBtnRef.current?.focus();
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   useEffect(() => {

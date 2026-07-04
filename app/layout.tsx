@@ -32,9 +32,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://solhous.com"),
   // Each page sets its own complete, unique title — no shared template/suffix,
   // matching the original site where every page's <title> was fully authored.
-  title: "Studio Hous — Editorial Portrait Photography | Greensboro, NC",
+  title: "SolHous — Editorial Photography & Creative House | Greensboro, NC",
   description:
-    "Studio Hous is an editorial portrait photography studio in Greensboro, North Carolina. Portraits, graduation, prom, personal branding, real estate, and commercial — every frame intentional. Part of the SolHous creative universe.",
+    "SolHous is a creative house in Greensboro, North Carolina, built around Studio Hous editorial portrait photography — plus the human-curated Anti-Feed, the Direction Market, Field Notes, Spaces, Cosign, and HousScapes. Sessions from $135.",
   icons: { icon: "/media/favicon.png" },
 };
 

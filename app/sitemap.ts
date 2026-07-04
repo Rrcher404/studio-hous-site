@@ -1,11 +1,21 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: "https://solhous.com/",
-      changeFrequency: "monthly",
-      priority: 1.0,
-    },
+  const pages: { path: string; priority: number }[] = [
+    { path: "/", priority: 1.0 },
+    { path: "/work/", priority: 0.9 },
+    { path: "/sessions/", priority: 0.9 },
+    { path: "/anti-feed/", priority: 0.8 },
+    { path: "/direction-market/", priority: 0.7 },
+    { path: "/field-notes/", priority: 0.8 },
+    { path: "/spaces/", priority: 0.7 },
+    { path: "/cosign/", priority: 0.7 },
+    { path: "/housscapes/", priority: 0.7 },
   ];
+
+  return pages.map(({ path, priority }) => ({
+    url: `https://solhous.com${path}`,
+    changeFrequency: "monthly" as const,
+    priority,
+  }));
 }

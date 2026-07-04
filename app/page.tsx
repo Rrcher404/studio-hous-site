@@ -7,13 +7,14 @@ import { HeroVeil } from "@/components/HeroVeil";
 import { BookMeButton } from "@/components/BookingModal";
 
 export const metadata: Metadata = {
-  title: "Studio Hous — Editorial Portrait Photography | Greensboro, NC",
+  title: "SolHous — Editorial Photography & Creative House | Greensboro, NC",
   description:
-    "Studio Hous is an editorial portrait photography studio in Greensboro, North Carolina. Portraits, graduation, prom, personal branding, real estate, and commercial — every frame intentional. Part of the SolHous creative universe.",
+    "SolHous is a creative house in Greensboro, North Carolina, built around Studio Hous editorial portrait photography — plus the human-curated Anti-Feed, the Direction Market, Field Notes, Spaces, Cosign, and HousScapes. Sessions from $135.",
   alternates: { canonical: "https://solhous.com/" },
   openGraph: {
-    title: "Studio Hous — Editorial Photography, Greensboro NC",
-    description: "We don't shoot volume. We shoot with purpose. Every image earns its place.",
+    title: "SolHous — A Creative House, Greensboro NC",
+    description:
+      "Not a platform. A building with rooms — photography, curation, direction, sound, spaces, and a written record of the work.",
     type: "website",
     url: "https://solhous.com/",
     images: [
@@ -65,7 +66,7 @@ const workTeaser = [
   },
 ];
 
-const universeCards: {
+const rooms: {
   href: string;
   img: string;
   alt: string;
@@ -75,12 +76,38 @@ const universeCards: {
   imgPos?: string;
 }[] = [
   {
-    href: "/spaces/",
-    img: "/media/studio/studio-02.jpg",
-    alt: "Wide interior of the studio: cyc backdrop, softbox, and a gallery print wall.",
-    k: "SolHous Spaces",
-    h: "Property & brand",
-    p: "The room and the people in it, shot with the same eye. Listings, storefronts, and headshots across the Triad.",
+    href: "/sessions/",
+    img: "/media/portfolio/portraits/portrait-38.jpg",
+    imgPos: "center 20%",
+    alt: "Three friends at a warm-lit hallway threshold, one in a black tuxedo flanked by two women in forest green and ivory, dressed for a formal night out.",
+    k: "Studio Hous",
+    h: "Sessions & pricing",
+    p: "The editorial photography studio the house was built around. Portraits, grad, prom, and commercial, from $135.",
+  },
+  {
+    href: "/work/",
+    img: "/media/portfolio/portraits/portrait-39.jpg",
+    imgPos: "center 20%",
+    alt: "Two best friends in matching mustard bomber jackets sharing tea at a chrome diner table against a crushed forest-green velvet backdrop.",
+    k: "Studio Hous",
+    h: "The portfolio",
+    p: "The frames that earned their place. A working sample of recent editorial sessions.",
+  },
+  {
+    href: "/anti-feed/",
+    img: "/media/portfolio/portraits/portrait-31.jpg",
+    alt: "Young man with locs and a fur-trim collar studying his reflection in a green-framed shop window.",
+    k: "The Anti-Feed",
+    h: "Curation, not ranking",
+    p: "Work that earned its place — selected by a person, published with the why.",
+  },
+  {
+    href: "/direction-market/",
+    img: "/media/studio/studio-06.jpg",
+    alt: "A flat-lay of a Greensboro shoot plan: mood board, lighting diagram, shot list, and a Polaroid.",
+    k: "The Direction Market",
+    h: "Direction you can build on",
+    p: "Complete creative direction packages — mood boards, shot lists, lighting, grades, styling. Opening soon.",
   },
   {
     href: "/field-notes/",
@@ -91,12 +118,20 @@ const universeCards: {
     p: "A real day in a working creative's life, documented twice a month. Real people, real days, real work.",
   },
   {
+    href: "/spaces/",
+    img: "/media/studio/studio-02.jpg",
+    alt: "Wide interior of the studio: cyc backdrop, softbox, and a gallery print wall.",
+    k: "SolHous Spaces",
+    h: "Property & brand",
+    p: "The room and the people in it, shot with the same eye. Listings, storefronts, and headshots across the Triad.",
+  },
+  {
     href: "/housscapes/",
     img: "/media/studio/studio-05.jpg",
-    alt: "Crew in SolHous Productions gear rigging a stage light at festival sunset.",
+    alt: "A sound crew adjusting a stage light against sunset.",
     k: "HousScapes",
     h: "Custom sound",
-    p: "Send the brief, get a track built around the post — not pulled from a library. Custom sound by SolHous Records.",
+    p: "Send the brief, get a track built around your content — not pulled from a library. Custom sound by SolHous Records.",
   },
   {
     href: "/cosign/",
@@ -106,27 +141,10 @@ const universeCards: {
     h: "The bridge layer",
     p: "Recognition and production for the organizations already doing the work. Reciprocity, never extraction.",
   },
-  {
-    href: "/sessions/",
-    img: "/media/portfolio/portraits/portrait-38.jpg",
-    imgPos: "center 20%",
-    alt: "Three friends at a warm-lit hallway threshold, one in a black tuxedo flanked by two women in forest green and ivory, dressed for a formal night out.",
-    k: "Book",
-    h: "Sessions & pricing",
-    p: "Portraits, grad, prom, and commercial, from $135. Direction, editing, and a curated gallery on every one.",
-  },
-  {
-    href: "/work/",
-    img: "/media/portfolio/portraits/portrait-39.jpg",
-    imgPos: "center 20%",
-    alt: "Two best friends in matching mustard bomber jackets sharing tea at a chrome diner table against a crushed forest-green velvet backdrop.",
-    k: "Work",
-    h: "The portfolio",
-    p: "The frames that earned their place. A working sample of recent editorial sessions.",
-  },
 ];
 
-const jsonLd = {
+/** The founding room keeps its service schema so the homepage's equity still ranks for photography intent. */
+const jsonLdStudio = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   name: "Studio Hous",
@@ -141,8 +159,33 @@ const jsonLd = {
     addressRegion: "NC",
     addressCountry: "US",
   },
-  url: "https://solhous.com/",
+  url: "https://solhous.com/sessions/",
+  parentOrganization: { "@type": "Organization", name: "SolHous", url: "https://solhous.com/" },
   sameAs: ["https://www.instagram.com/thestudio.hous/"],
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "SolHous",
+  url: "https://solhous.com/",
+  email: "studio@solhous.com",
+  description:
+    "SolHous is a creative house in Greensboro, North Carolina — editorial photography, human curation, creative direction, sound, and spaces.",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Greensboro",
+    addressRegion: "NC",
+    addressCountry: "US",
+  },
+  sameAs: ["https://www.instagram.com/thestudio.hous/"],
+  brand: [
+    { "@type": "Brand", name: "Studio Hous" },
+    { "@type": "Brand", name: "The Anti-Feed" },
+    { "@type": "Brand", name: "The Direction Market" },
+    { "@type": "Brand", name: "SolHous Spaces" },
+    { "@type": "Brand", name: "HousScapes" },
+  ],
 };
 
 export default function HomePage() {
@@ -152,22 +195,29 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdStudio) }}
+      />
 
       <header className="hero" id="top">
         <HeroVeil />
         <div className="sunbloom" />
         <div className="hero-grad" />
         <div className="hero-content">
-          <p className="eyebrow">Studio Hous · Editorial Photography · Greensboro NC</p>
+          <p className="eyebrow">SolHous · A Creative House · Greensboro NC</p>
           <h1>
-            Not the pose.
+            Welcome to
             <br />
-            The <em>person.</em>
+            The <em>Hous.</em>
           </h1>
-          <p className="sub">
-            Editorial portraits, made with intention. Graduation, prom, personal branding, real estate, and
-            commercial.
-          </p>
+          <p className="sub">Not a platform. A building with rooms.</p>
+          <div style={{ marginTop: 30, display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <BookMeButton className="btn">Book a session ›</BookMeButton>
+            <Link className="btn ghost" href="/sessions/">
+              Sessions from $135 ›
+            </Link>
+          </div>
         </div>
         <div className="scrollcue" aria-hidden="true">
           scroll ↓
@@ -175,57 +225,63 @@ export default function HomePage() {
       </header>
 
       <main id="main">
-        <section aria-labelledby="work-h">
-          <Reveal className="block" id="work">
-            <p className="roll">Roll 001 · the work</p>
-            <h2 className="big" id="work-h">
-              Every image earns
+        <section aria-labelledby="rooms-h">
+          <Reveal className="block" id="rooms">
+            <p className="roll">Roll 001 · the rooms</p>
+            <h2 className="big" id="rooms-h">
+              One house.
               <br />
-              its <em>place.</em>
+              Every door <em>open.</em>
             </h2>
             <p className="muted">
-              Editorial direction, premium editing, and a curated gallery — the same eye on every session,
-              whether it&rsquo;s a graduation portrait or a brand shoot. A few recent frames below.
+              SolHous started as a photography studio and grew the way a house does — a room at a time,
+              each one built because the work asked for it. Studio Hous is the founding room. Every door
+              is below. Walk in anywhere.
             </p>
-            <div style={{ marginTop: 38 }}>
-              <Gallery items={workTeaser} />
-            </div>
-            <div style={{ marginTop: 34 }}>
-              <Link className="btn ghost" href="/work/">
-                See the full portfolio ›
-              </Link>
+            <div className="uni">
+              {rooms.map((card) => (
+                <Link key={card.href} href={card.href}>
+                  <div className="im">
+                    {/* Decorative inside a text-labeled card link — empty alt keeps the link name short for screen readers. */}
+                    <img
+                      src={card.img}
+                      alt=""
+                      loading="lazy"
+                      style={card.imgPos ? { objectPosition: card.imgPos } : undefined}
+                    />
+                  </div>
+                  <div className="tx">
+                    <span className="k">{card.k}</span>
+                    <h3>{card.h}</h3>
+                    <p>{card.p}</p>
+                    <span className="go">Enter ›</span>
+                  </div>
+                </Link>
+              ))}
             </div>
           </Reveal>
         </section>
 
-        <section aria-labelledby="appr-h">
-          <Reveal className="block" id="approach">
-            <p className="roll">Roll 002 · the approach</p>
-            <h2 className="big" id="appr-h">
-              We don&rsquo;t shoot volume.
+        <section aria-labelledby="work-h">
+          <Reveal className="block" id="work">
+            <p className="roll">Roll 002 · the founding room</p>
+            <h2 className="big" id="work-h">
+              Where the standard
               <br />
-              We shoot with <em>purpose.</em>
+              was <em>set.</em>
             </h2>
             <p className="muted">
-              Studio Hous is an editorial portrait studio in Greensboro, North Carolina, making clean,
-              intentional imagery that feels polished and grounded. No rushed, generic work. Every frame is
-              intentional.
+              Studio Hous is the founding room — where the house&rsquo;s standard for direction,
+              editing, and delivery was set, whether the session is a graduation portrait or a brand
+              shoot. A few recent frames below.
             </p>
-            <div className="princ">
-              <div className="p">
-                <h3>Grounded craft</h3>
-                <p>Editorial-level direction on every session, whether it&rsquo;s a graduation portrait or a listing shoot.</p>
-              </div>
-              <div className="p">
-                <h3>Clear communication</h3>
-                <p>From inquiry to gallery delivery, you&rsquo;ll know exactly what to expect, when, and what it costs. No surprises.</p>
-              </div>
-              <div className="p">
-                <h3>Intentional results</h3>
-                <p>We don&rsquo;t shoot volume. Every image in your gallery is there because it earned its place.</p>
-              </div>
+            <div style={{ marginTop: 38 }}>
+              <Gallery items={workTeaser} />
             </div>
-            <div style={{ marginTop: 42 }}>
+            <div style={{ marginTop: 34, display: "flex", gap: 14, flexWrap: "wrap" }}>
+              <Link className="btn ghost" href="/work/">
+                See the full portfolio ›
+              </Link>
               <BookMeButton className="btn">Book a session ›</BookMeButton>
             </div>
           </Reveal>
@@ -253,46 +309,50 @@ export default function HomePage() {
               </div>
               <div className="img">
                 <img
-                  src="/media/studio/studio-06.jpg"
-                  alt="A flat-lay of a Greensboro shoot plan: mood board, lighting diagram, shot list, and a Polaroid."
+                  src="/media/portfolio/portraits/portrait-38.jpg"
+                  alt="Three friends at a warm-lit hallway threshold, dressed for a formal night out."
                   loading="lazy"
+                  style={{ objectPosition: "center 20%" }}
                 />
               </div>
             </div>
           </Reveal>
         </section>
 
-        <section aria-labelledby="uni-h">
-          <Reveal className="block" id="universe">
-            <p className="roll">Roll 004 · the Hous</p>
-            <h2 className="big" id="uni-h">
-              One studio.
-              <br />A wider <em>practice.</em>
+        <section aria-labelledby="creed-h">
+          <Reveal className="block" id="creed">
+            <p className="roll">Roll 004 · how the house works</p>
+            <h2 className="big" id="creed-h">
+              Three convictions,
+              <br />
+              every <em>room.</em>
             </h2>
-            <p className="muted">
-              Studio Hous is the front door. Behind it is SolHous — not a platform, a building with rooms.
-              Space to shoot in, sound to score with, recognition for the ones already doing the work, and a
-              written record of the work as it happens. Six ways into one practice.
-            </p>
-            <div className="uni">
-              {universeCards.map((card) => (
-                <Link key={card.href} href={card.href}>
-                  <div className="im">
-                    <img
-                      src={card.img}
-                      alt={card.alt}
-                      loading="lazy"
-                      style={card.imgPos ? { objectPosition: card.imgPos } : undefined}
-                    />
-                  </div>
-                  <div className="tx">
-                    <span className="k">{card.k}</span>
-                    <h3>{card.h}</h3>
-                    <p>{card.p}</p>
-                    <span className="go">Enter ›</span>
-                  </div>
-                </Link>
-              ))}
+            <p className="muted">Everything in the house runs on the same three.</p>
+            <div className="princ">
+              <div className="p">
+                <span className="k">Curation over algorithm</span>
+                <h3>A person chooses</h3>
+                <p>
+                  Nothing here is ranked by a machine. Work gets selected by a trained eye and published
+                  with the reason why.
+                </p>
+              </div>
+              <div className="p">
+                <span className="k">Direction over content</span>
+                <h3>The frame starts on paper</h3>
+                <p>
+                  Mood boards, shot lists, lighting plans — the decisions behind the frame are worth as
+                  much as the frame. We treat them that way.
+                </p>
+              </div>
+              <div className="p">
+                <span className="k">Recognition over reach</span>
+                <h3>Credit is written out</h3>
+                <p>
+                  Field Notes documents the people doing the work. Cosign recognizes the organizations
+                  behind them. Names attached, always.
+                </p>
+              </div>
             </div>
           </Reveal>
         </section>
@@ -319,14 +379,14 @@ export default function HomePage() {
         id="about"
         line={
           <>
-            Your moment deserves more than a snapshot.
+            One house. Many rooms.
             <br />
-            It deserves Studio Hous.
+            Every door open.
           </>
         }
         meta={
           <>
-            Studio Hous · Editorial Photography · Greensboro, North Carolina
+            SolHous · Studio Hous · Greensboro, North Carolina
             <br />
             <a href="mailto:studio@solhous.com">studio@solhous.com</a> ·{" "}
             <a href="https://www.instagram.com/thestudio.hous/" target="_blank" rel="noopener">

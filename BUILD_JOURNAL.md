@@ -68,3 +68,8 @@ P1 also done: real-estate + commercial cards, haze tuned (6px/55%/320px), type t
 - **The footage is the brand.** When Jene provides graded media, align the site to it; don't impose a grade.
 - **Committee on a real artifact > committee on a brief.** Build v1, then have the room review actual code — the critique is concrete and the agents aren't guessing.
 - **Ship to a live URL before QA.** Most QA blockers (file://, headless) vanish once there's a real URL.
+
+---
+
+## 2026-07-04 — SolHous hub rebrand + Anti-Feed + Direction Market
+Landing rebranded from Studio Hous page to SolHous hub ("Welcome to The Hous", 8 room cards, hero booking CTA with $135 anchor, dual JSON-LD: Organization + ProfessionalService). New: /anti-feed/ (manifesto, signed Selection 001 from house frames, submission form w/ clipboard fallback) and /direction-market/ (honest placeholder, mailto notify). Nav 6→8 links, menu breakpoint 900→1120px. Committee review (Isolde/Yuki/Reyes/Voss, T4): P0s fixed pre-push — hero ask, SEO retention, curator signature, mailto honesty, fform focus-visible. OPEN: model releases for Selection 001 frames (esp. portrait-25) under the new editorial banner; Google Form endpoints for Anti-Feed submissions + Market waitlist (mailto is the honest fallback, not the end state); test booking through the pipe post-deploy.

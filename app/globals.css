@@ -53,7 +53,7 @@ nav.sitenav{position:fixed;top:20px;left:0;right:0;z-index:95;display:flex;justi
 .navlinks a[aria-current="page"]{opacity:1;color:var(--sun);}
 .navlinks .book{color:var(--haze);background:var(--sun);opacity:1;border-radius:2px;margin-left:8px;}
 .navlinks .menu-btn{display:none;}
-@media(max-width:900px){
+@media(max-width:1120px){
   .navlinks a:not(.book){display:none;}
   .navlinks .menu-btn{display:inline-flex;align-items:center;}
 }
@@ -188,11 +188,14 @@ h3.mid{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(22
 /* forms (field-notes submission etc.) */
 .fform{margin-top:44px;max-width:620px;}
 .fform label{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin:26px 0 4px;}
-.fform input,.fform textarea,.fform select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--olive);padding:11px 2px;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--milk);outline:none;border-radius:0;}
+.fform input,.fform textarea,.fform select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--olive);padding:11px 2px;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--milk);border-radius:0;}
+.fform input:focus-visible,.fform textarea:focus-visible,.fform select:focus-visible{outline:2px solid var(--sun);outline-offset:3px;}
+.fform input:focus,.fform textarea:focus{border-bottom-color:var(--sun);}
 .fform textarea{font-size:18px;line-height:1.5;min-height:96px;resize:vertical;}
 .fform input::placeholder,.fform textarea::placeholder{color:rgba(164,172,142,.6);}
 .fform .err{color:#e0a36a;font-size:12px;margin-top:8px;min-height:14px;}
 .fform .note{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--olive);text-transform:uppercase;margin-top:22px;line-height:1.7;}
+.linklike{background:none;border:none;color:var(--sun);text-decoration:underline;cursor:pointer;font:inherit;padding:0;}
 
 /* footer */
 footer{position:relative;z-index:2;padding:13vh 30px 9vh;text-align:center;border-top:1px solid rgba(237,239,224,.1);}

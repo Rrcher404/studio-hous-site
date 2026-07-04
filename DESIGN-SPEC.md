@@ -44,6 +44,8 @@ ALL injected automatically; do not duplicate their markup).
     <a href="/work/" data-h>Work</a>
     <a href="/sessions/" data-h>Sessions</a>
     <a href="/field-notes/" data-h>Field Notes</a>
+    <a href="/anti-feed/" data-h>Anti-Feed</a>
+    <a href="/direction-market/" data-h>Direction Market</a>
     <a href="/spaces/" data-h>Spaces</a>
     <a href="/cosign/" data-h>Cosign</a>
     <a href="/housscapes/" data-h>HousScapes</a>
@@ -90,8 +92,9 @@ ALL injected automatically; do not duplicate their markup).
 ```
 
 ## Brand mark in nav
-- Studio pages (`/`, `/work/`, `/sessions/`, `/field-notes/`): `STUDIO H<span class="o">O</span>US`
-- Venture pages (`/spaces/`, `/cosign/`, `/housscapes/`): `S<span class="o">O</span>LHOUS`
+- Studio pages (`/work/`, `/sessions/`, `/field-notes/`): `STUDIO H<span class="o">O</span>US`
+- Hub + venture pages (`/`, `/anti-feed/`, `/direction-market/`, `/spaces/`, `/cosign/`, `/housscapes/`): `S<span class="o">O</span>LHOUS`
+- The landing page is the SolHous hub (rebranded 2026-07-04) — it showcases every room; Studio Hous lives at `/work/` + `/sessions/`.
 
 ## Component classes available (see assets/site.css)
 - `.block` section container (`.tight` for less padding)
