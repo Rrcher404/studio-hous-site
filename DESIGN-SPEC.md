@@ -41,14 +41,10 @@ ALL injected automatically; do not duplicate their markup).
 <nav class="sitenav" aria-label="Primary">
   <a href="/" class="brand">BRAND MARK (see below)</a>
   <div class="navlinks">
-    <a href="/work/" data-h>Work</a>
-    <a href="/sessions/" data-h>Sessions</a>
-    <a href="/field-notes/" data-h>Field Notes</a>
-    <a href="/anti-feed/" data-h>Anti-Feed</a>
-    <a href="/direction-market/" data-h>Direction Market</a>
-    <a href="/spaces/" data-h>Spaces</a>
-    <a href="/cosign/" data-h>Cosign</a>
-    <a href="/housscapes/" data-h>HousScapes</a>
+    <!-- Desktop nav renders TWO dropdown tabs (see lib/nav.ts NAV_GROUPS), not flat links:
+         Studio ▾   → Work · Sessions · Field Notes
+         The Hous ▾ → Anti-Feed · Direction Market · Records · HousScapes · Spaces · Cosign
+         Dropdown panels use class "dropdown glass distort". Add new pages to NAV_GROUPS. -->
     <button class="menu-btn" data-menu data-h>Menu</button>
     <button class="book" data-book data-h aria-haspopup="dialog">Book ›</button>
   </div>
@@ -93,8 +89,13 @@ ALL injected automatically; do not duplicate their markup).
 
 ## Brand mark in nav
 - Studio pages (`/work/`, `/sessions/`, `/field-notes/`): `STUDIO H<span class="o">O</span>US`
-- Hub + venture pages (`/`, `/anti-feed/`, `/direction-market/`, `/spaces/`, `/cosign/`, `/housscapes/`): `S<span class="o">O</span>LHOUS`
+- Hub + venture pages (`/`, `/anti-feed/`, `/direction-market/`, `/records/`, `/spaces/`, `/cosign/`, `/housscapes/`): `S<span class="o">O</span>LHOUS`
 - The landing page is the SolHous hub (rebranded 2026-07-04) — it showcases every room; Studio Hous lives at `/work/` + `/sessions/`.
+
+## Glass system (added 2026-07-04)
+- `.glass` = liquid-glass chrome material: translucent haze tint + backdrop blur + inner milk sheen. `.glass.distort` adds the SVG `#glass-distortion` filter (defs in `components/GlassDefs.tsx`, mounted in layout; Safari falls back to plain blur automatically).
+- Applied to CHROME ONLY: the fixed nav bar, dropdown panels, booking modal card, records player. Never on content blocks, never on text-bearing editorial sections.
+- `components/LiquidGlass.tsx` = decorative cursor-following lens (dependency-free). Currently lives on the `/records/` hero only. Home hero keeps the part-the-haze veil — never stack both.
 
 ## Component classes available (see assets/site.css)
 - `.block` section container (`.tight` for less padding)

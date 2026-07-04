@@ -1,19 +1,37 @@
 export type NavLink = { href: string; label: string };
+export type NavGroup = { label: string; mobileLabel: string; links: NavLink[] };
 
-export const NAV: NavLink[] = [
-  { href: "/work/", label: "Work" },
-  { href: "/sessions/", label: "Sessions" },
-  { href: "/field-notes/", label: "Field Notes" },
-  { href: "/anti-feed/", label: "Anti-Feed" },
-  { href: "/direction-market/", label: "Direction Market" },
-  { href: "/spaces/", label: "Spaces" },
-  { href: "/cosign/", label: "Cosign" },
-  { href: "/housscapes/", label: "HousScapes" },
+/** Desktop nav renders these as two dropdown tabs; the mobile menu renders them as groups. */
+export const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "Studio",
+    mobileLabel: "The Studio",
+    links: [
+      { href: "/work/", label: "Work" },
+      { href: "/sessions/", label: "Sessions" },
+      { href: "/field-notes/", label: "Field Notes" },
+    ],
+  },
+  {
+    label: "The Hous",
+    mobileLabel: "The Hous",
+    links: [
+      { href: "/anti-feed/", label: "Anti-Feed" },
+      { href: "/direction-market/", label: "Direction Market" },
+      { href: "/records/", label: "Records" },
+      { href: "/housscapes/", label: "HousScapes" },
+      { href: "/spaces/", label: "Spaces" },
+      { href: "/cosign/", label: "Cosign" },
+    ],
+  },
 ];
+
+/** Flat list (footer nav, sitemaps, anything that wants every room). */
+export const NAV: NavLink[] = NAV_GROUPS.flatMap((g) => g.links);
 
 /**
  * Pages that use the "STUDIO H​OUS" brand mark vs. the "S​OLHOUS" venture mark.
- * The landing page is the SolHous hub now, so it carries the venture mark.
+ * The landing page is the SolHous hub, so it carries the venture mark.
  */
 export const STUDIO_BRAND_PATHS = new Set(["/work/", "/sessions/", "/field-notes/"]);
 

@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/sessions/", priority: 0.9 },
     { path: "/anti-feed/", priority: 0.8 },
     { path: "/direction-market/", priority: 0.7 },
+    { path: "/records/", priority: 0.7 },
     { path: "/field-notes/", priority: 0.8 },
     { path: "/spaces/", priority: 0.7 },
     { path: "/cosign/", priority: 0.7 },

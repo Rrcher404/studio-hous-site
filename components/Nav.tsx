@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { NAV, STUDIO_BRAND_PATHS, isActivePath } from "@/lib/nav";
+import { NAV_GROUPS, STUDIO_BRAND_PATHS, isActivePath } from "@/lib/nav";
 import { BookMeButton } from "./BookingModal";
 
 export function Nav() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   const isStudioBrand = STUDIO_BRAND_PATHS.has(pathname);
 
@@ -23,23 +25,34 @@ export function Nav() {
 
   useEffect(() => {
     function onKeydown(e: KeyboardEvent) {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        setOpenGroup(null);
+      }
     }
     document.addEventListener("keydown", onKeydown);
     return () => document.removeEventListener("keydown", onKeydown);
   }, []);
 
-  // Close the mobile menu whenever the route changes.
+  // Close menu + dropdowns whenever the route changes.
   useEffect(() => {
     setMenuOpen(false);
+    setOpenGroup(null);
   }, [pathname]);
 
-  const studioLinks = NAV.slice(0, 3);
-  const housLinks = NAV.slice(3);
+  // Click/tap outside the nav closes any open dropdown.
+  useEffect(() => {
+    if (!openGroup) return;
+    function onPointerDown(e: PointerEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenGroup(null);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [openGroup]);
 
   return (
     <>
-      <nav className="sitenav" aria-label="Primary">
+      <nav className="sitenav" aria-label="Primary" ref={navRef}>
         <Link href="/" className="brand" data-h>
           {isStudioBrand ? (
             <>
@@ -52,16 +65,44 @@ export function Nav() {
           )}
         </Link>
         <div className="navlinks">
-          {NAV.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              data-h
-              aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_GROUPS.map((group) => {
+            const active = group.links.some((l) => isActivePath(l.href, pathname));
+            const open = openGroup === group.label;
+            return (
+              <div
+                key={group.label}
+                className={`navgroup${open ? " open" : ""}`}
+                onMouseEnter={() => setOpenGroup(group.label)}
+                onMouseLeave={() => setOpenGroup((g) => (g === group.label ? null : g))}
+              >
+                <button
+                  type="button"
+                  data-h
+                  data-active={active || undefined}
+                  aria-expanded={open}
+                  aria-haspopup="true"
+                  onClick={() => setOpenGroup(open ? null : group.label)}
+                >
+                  {group.label}{" "}
+                  <span className="chev" aria-hidden="true">
+                    ▾
+                  </span>
+                </button>
+                <div className="dropdown glass distort" aria-label={group.label}>
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      data-h
+                      aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
           <button
             type="button"
             className="menu-btn"
@@ -89,11 +130,11 @@ export function Nav() {
         >
           ×
         </button>
-        <p className="grp">The Studio</p>
+        <p className="grp">{NAV_GROUPS[0].mobileLabel}</p>
         <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
           Home
         </Link>
-        {studioLinks.map((link) => (
+        {NAV_GROUPS[0].links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
@@ -102,15 +143,19 @@ export function Nav() {
             {link.label}
           </Link>
         ))}
-        <p className="grp">The Hous</p>
-        {housLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
-          >
-            {link.label}
-          </Link>
+        {NAV_GROUPS.slice(1).map((group) => (
+          <div key={group.label} style={{ display: "contents" }}>
+            <p className="grp">{group.mobileLabel}</p>
+            {group.links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         ))}
       </div>
     </>

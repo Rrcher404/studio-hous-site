@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { FilmChrome } from "@/components/FilmChrome";
 import { CursorDot } from "@/components/CursorDot";
+import { GlassDefs } from "@/components/GlassDefs";
 import { Nav } from "@/components/Nav";
 import { BookingModalProvider } from "@/components/BookingModal";
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="skip">
           Skip to content
         </a>
+        <GlassDefs />
         <BookingModalProvider>
           <Nav />
           {children}

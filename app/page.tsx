@@ -126,6 +126,15 @@ const rooms: {
     p: "The room and the people in it, shot with the same eye. Listings, storefronts, and headshots across the Triad.",
   },
   {
+    href: "/records/",
+    img: "/media/studio/studio-05.jpg",
+    imgPos: "center 75%",
+    alt: "A sound crew adjusting a stage light against sunset.",
+    k: "SolHous Records",
+    h: "The sound of the house",
+    p: "Original tracks and beats, released here first. The first pressing is being cut now.",
+  },
+  {
     href: "/housscapes/",
     img: "/media/studio/studio-05.jpg",
     alt: "A sound crew adjusting a stage light against sunset.",
