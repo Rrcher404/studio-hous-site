@@ -127,12 +127,11 @@ const rooms: {
   },
   {
     href: "/records/",
-    img: "/media/studio/studio-05.jpg",
-    imgPos: "center 75%",
-    alt: "A sound crew adjusting a stage light against sunset.",
+    img: "/media/records/echoes-of-tomorrow.jpg",
+    alt: "Echoes of Tomorrow EP cover art: a stairway rising toward a low sun over water.",
     k: "SolHous Records",
     h: "The sound of the house",
-    p: "Original tracks and beats, released here first. The first pressing is being cut now.",
+    p: "Echoes of Tomorrow — the debut EP — is out now. Play it here, or anywhere you stream.",
   },
   {
     href: "/housscapes/",

@@ -7,16 +7,17 @@ import { RecordsPlayer } from "@/components/RecordsPlayer";
 import { TRACKS } from "@/lib/records";
 
 export const metadata: Metadata = {
-  title: "SolHous Records — The Sound of the House | Greensboro, NC",
+  title: "SolHous Records — Echoes of Tomorrow EP, Out Now | Greensboro, NC",
   description:
-    "SolHous Records is the music arm of the house — original tracks and beats, made with the same intention as the photographs. The first pressing is being cut now.",
+    "SolHous Records is the music arm of the house. Echoes of Tomorrow — the debut EP — is out now: play it here, on Apple Music, and everywhere you stream. ℗ 2025 SolHous Records.",
   alternates: { canonical: "https://solhous.com/records/" },
   openGraph: {
-    title: "SolHous Records",
-    description: "The house has a sound. Original tracks and beats, pressed with intention.",
+    title: "SolHous Records — Echoes of Tomorrow EP",
+    description:
+      "The house has a sound. The debut EP is out now — play it here or anywhere you stream.",
     type: "website",
     url: "https://solhous.com/records/",
-    images: [{ url: "https://solhous.com/media/studio/studio-05.jpg" }],
+    images: [{ url: "https://solhous.com/media/records/echoes-of-tomorrow.jpg" }],
   },
   twitter: { card: "summary_large_image" },
 };
@@ -67,12 +68,26 @@ export default function RecordsPage() {
             {hasTracks ? (
               <>
                 <h2 className="big" id="press-h">
-                  Now <em>playing.</em>
+                  Echoes of
+                  <br />
+                  <em>Tomorrow.</em>
                 </h2>
                 <p className="muted">
+                  The debut EP — four tracks, out now on every streaming platform under SolHous.
                   Everything below was made inside the house. Press play, stay a while.
                 </p>
                 <RecordsPlayer />
+                <p className="muted" style={{ marginTop: 26, fontSize: 13 }}>
+                  ℗ 2025 SolHous Records ·{" "}
+                  <a
+                    href="https://music.apple.com/us/artist/solhous/1842974967"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Solhous on Apple Music
+                  </a>{" "}
+                  — also on Spotify and everywhere else you listen.
+                </p>
               </>
             ) : (
               <>

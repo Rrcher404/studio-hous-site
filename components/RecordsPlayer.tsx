@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { TRACKS } from "@/lib/records";
+import { RELEASE, TRACKS } from "@/lib/records";
 
 function fmt(s: number): string {
   if (!Number.isFinite(s) || s < 0) return "0:00";
@@ -53,9 +53,21 @@ export function RecordsPlayer() {
 
   return (
     <div className="player glass distort">
-      <div className="now">
-        <h3>{track.title}</h3>
-        <span className="kindtag">{track.kind}</span>
+      <div className="phead">
+        <img
+          className="cover"
+          src={RELEASE.cover}
+          alt={`${RELEASE.title} — EP cover art: a stairway rising toward a low sun over water.`}
+        />
+        <div className="pmeta">
+          <p className="kindtag">
+            Now playing · {RELEASE.title} — EP · {RELEASE.year}
+          </p>
+          <h3>{track.title}</h3>
+          <a className="applelink" href={RELEASE.appleUrl} target="_blank" rel="noopener">
+            Open in Apple Music ›
+          </a>
+        </div>
       </div>
       <input
         className="seek"
@@ -95,7 +107,7 @@ export function RecordsPlayer() {
               onClick={() => playAt(i)}
             >
               <span>{t.title}</span>
-              <span className="kindtag">{t.kind}</span>
+              <span className="kindtag">{t.length ?? t.kind}</span>
             </button>
           ))}
         </div>

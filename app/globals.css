@@ -302,6 +302,11 @@ footer .legal{margin-top:20px;font-size:10.5px;color:var(--olive);opacity:.7;max
 
 /* /records-only, additive */
 .player{max-width:720px;margin-top:44px;padding:30px 28px;border-radius:14px;}
+.player .phead{display:flex;gap:22px;align-items:center;}
+.player .cover{width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid rgba(237,239,224,.12);flex-shrink:0;}
+.player .pmeta h3{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.4vw,32px);font-weight:500;line-height:1.1;margin-top:6px;}
+.player .applelink{display:inline-block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--sun);text-decoration:none;opacity:.85;transition:.3s;}
+.player .applelink:hover{opacity:1;}
 .player .now{display:flex;justify-content:space-between;align-items:baseline;gap:14px;}
 .player .now h3{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.4vw,32px);font-weight:500;line-height:1.1;}
 .kindtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--sun);white-space:nowrap;}
