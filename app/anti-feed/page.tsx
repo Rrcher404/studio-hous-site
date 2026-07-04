@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Selection 001 — drawn from inside the house while the first outside
+ * Selection 001 — drawn from inside the Hous while the first outside
  * submissions arrive. Captions are the curator's note, not the category.
  */
 const selection001 = [
@@ -103,7 +103,7 @@ export default function AntiFeedPage() {
                 Being seen by ten thousand scrollers is exposure. Being chosen by one person with a
                 trained eye is recognition. We deal in the second thing.
               </p>
-              <p className="by">— the house position</p>
+              <p className="by">— the Hous position</p>
             </div>
           </Reveal>
         </section>
@@ -154,7 +154,7 @@ export default function AntiFeedPage() {
               <em>selection.</em>
             </h2>
             <p className="muted">
-              Selection 001 is drawn from inside the house — Studio Hous frames — while the first outside
+              Selection 001 is drawn from inside the Hous — Studio Hous frames — while the first outside
               submissions arrive. That&rsquo;s deliberate: before we ask you to trust the curation, you
               should see the standard it holds itself to. Every caption below is the reason the frame was
               chosen, not the category it belongs to.
@@ -196,7 +196,7 @@ export default function AntiFeedPage() {
               The Direction Market is where direction gets made.
             </h3>
             <p className="muted">
-              Selection is the front porch of the house. Behind it: creative direction you can buy and
+              Selection is the front porch of the Hous. Behind it: creative direction you can buy and
               build on, and an editorial practice documenting the people doing the work. And every frame
               in Selection 001 was made in a Studio Hous session — that door is open too.
             </p>

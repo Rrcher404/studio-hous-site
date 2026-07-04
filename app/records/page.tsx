@@ -9,12 +9,12 @@ import { TRACKS } from "@/lib/records";
 export const metadata: Metadata = {
   title: "SolHous Records — Echoes of Tomorrow EP, Out Now | Greensboro, NC",
   description:
-    "SolHous Records is the music arm of the house. Echoes of Tomorrow — the debut EP — is out now: play it here, on Apple Music, and everywhere you stream. ℗ 2025 SolHous Records.",
+    "SolHous Records is the music arm of the Hous. Echoes of Tomorrow — the debut EP — is out now: play it here, on Apple Music, and everywhere you stream. ℗ 2025 SolHous Records.",
   alternates: { canonical: "https://solhous.com/records/" },
   openGraph: {
     title: "SolHous Records — Echoes of Tomorrow EP",
     description:
-      "The house has a sound. The debut EP is out now — play it here or anywhere you stream.",
+      "The Hous has a sound. The debut EP is out now — play it here or anywhere you stream.",
     type: "website",
     url: "https://solhous.com/records/",
     images: [{ url: "https://solhous.com/media/records/echoes-of-tomorrow.jpg" }],
@@ -30,11 +30,11 @@ export default function RecordsPage() {
       {/* Plain hero — no photograph. The liquid lens is the visual. */}
       <header className="page-hero tall" id="top">
         <div className="sunbloom" />
-        <LiquidGlass width={190} height={190} />
+        <LiquidGlass width={120} height={120} />
         <div className="inner">
           <p className="eyebrow">SolHous Records · The Music Arm · Greensboro NC</p>
           <h1>
-            The house has
+            The Hous has
             <br />a <em>sound.</em>
           </h1>
           <p className="sub">
@@ -54,7 +54,7 @@ export default function RecordsPage() {
               <em>posted.</em>
             </h2>
             <p className="muted">
-              SolHous Records is where the house&rsquo;s music lives — original compositions and produced
+              SolHous Records is where the music of the Hous lives — original compositions and produced
               beats, released here first. No upload schedule, no content calendar. A record goes on the
               shelf when it clears the bar, and it stays there. Same standard as every frame on this
               site.
@@ -74,7 +74,7 @@ export default function RecordsPage() {
                 </h2>
                 <p className="muted">
                   The debut EP — four tracks, out now on every streaming platform under SolHous.
-                  Everything below was made inside the house. Press play, stay a while.
+                  Everything below was made inside the Hous. Press play, stay a while.
                 </p>
                 <RecordsPlayer />
                 <p className="muted" style={{ marginTop: 26, fontSize: 13 }}>
@@ -97,7 +97,7 @@ export default function RecordsPage() {
                   cutting <em>now.</em>
                 </h2>
                 <p className="muted">
-                  The first tracks and beats are being finished the way everything ships from this house
+                  The first tracks and beats are being finished the way everything ships from this Hous
                   — when they clear the bar, not when the calendar says. They&rsquo;ll play right here.
                 </p>
                 <div className="firstwords" style={{ marginTop: 40 }}>
@@ -123,7 +123,7 @@ export default function RecordsPage() {
           <Reveal className="block tight" id="crosslink">
             <p className="roll">Roll 003 · the other speaker</p>
             <h3 className="mid" id="cx-h">
-              Records is what the house sounds like.
+              Records is what the Hous sounds like.
               <br />
               HousScapes is what your content sounds like.
             </h3>

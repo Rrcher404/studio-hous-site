@@ -82,7 +82,7 @@ const rooms: {
     alt: "Three friends at a warm-lit hallway threshold, one in a black tuxedo flanked by two women in forest green and ivory, dressed for a formal night out.",
     k: "Studio Hous",
     h: "Sessions & pricing",
-    p: "The editorial photography studio the house was built around. Portraits, grad, prom, and commercial, from $135.",
+    p: "The editorial photography studio the Hous was built around. Portraits, grad, prom, and commercial, from $135.",
   },
   {
     href: "/work/",
@@ -130,7 +130,7 @@ const rooms: {
     img: "/media/records/echoes-of-tomorrow.jpg",
     alt: "Echoes of Tomorrow EP cover art: a stairway rising toward a low sun over water.",
     k: "SolHous Records",
-    h: "The sound of the house",
+    h: "The sound of the Hous",
     p: "Echoes of Tomorrow — the debut EP — is out now. Play it here, or anywhere you stream.",
   },
   {
@@ -213,7 +213,7 @@ export default function HomePage() {
         <div className="sunbloom" />
         <div className="hero-grad" />
         <div className="hero-content">
-          <p className="eyebrow">SolHous · A Creative House · Greensboro NC</p>
+          <p className="eyebrow">SolHous · A Creative Hous · Greensboro NC</p>
           <h1>
             Welcome to
             <br />
@@ -237,12 +237,12 @@ export default function HomePage() {
           <Reveal className="block" id="rooms">
             <p className="roll">Roll 001 · the rooms</p>
             <h2 className="big" id="rooms-h">
-              One house.
+              One Hous.
               <br />
               Every door <em>open.</em>
             </h2>
             <p className="muted">
-              SolHous started as a photography studio and grew the way a house does — a room at a time,
+              SolHous started as a photography studio and grew the way a Hous does — a room at a time,
               each one built because the work asked for it. Studio Hous is the founding room. Every door
               is below. Walk in anywhere.
             </p>
@@ -279,7 +279,7 @@ export default function HomePage() {
               was <em>set.</em>
             </h2>
             <p className="muted">
-              Studio Hous is the founding room — where the house&rsquo;s standard for direction,
+              Studio Hous is the founding room — where the Hous&rsquo;s standard for direction,
               editing, and delivery was set, whether the session is a graduation portrait or a brand
               shoot. A few recent frames below.
             </p>
@@ -329,13 +329,13 @@ export default function HomePage() {
 
         <section aria-labelledby="creed-h">
           <Reveal className="block" id="creed">
-            <p className="roll">Roll 004 · how the house works</p>
+            <p className="roll">Roll 004 · how the Hous works</p>
             <h2 className="big" id="creed-h">
               Three convictions,
               <br />
               every <em>room.</em>
             </h2>
-            <p className="muted">Everything in the house runs on the same three.</p>
+            <p className="muted">Everything in the Hous runs on the same three.</p>
             <div className="princ">
               <div className="p">
                 <span className="k">Curation over algorithm</span>
@@ -387,7 +387,7 @@ export default function HomePage() {
         id="about"
         line={
           <>
-            One house. Many rooms.
+            One Hous. Many rooms.
             <br />
             Every door open.
           </>
