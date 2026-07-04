@@ -304,7 +304,18 @@ footer .legal{margin-top:20px;font-size:10.5px;color:var(--olive);opacity:.7;max
 .player{max-width:720px;margin-top:44px;padding:30px 28px;border-radius:14px;}
 .player .phead{display:flex;gap:22px;align-items:center;}
 .player .cover{width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid rgba(237,239,224,.12);flex-shrink:0;}
+.player .pmeta{flex:1;min-width:0;}
 .player .pmeta h3{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.4vw,32px);font-weight:500;line-height:1.1;margin-top:6px;}
+
+/* scrolling meta (kindtag + track title) — animates only when it overflows */
+.marquee{display:block;overflow:hidden;max-width:100%;}
+.marquee__track{display:flex;width:max-content;}
+.marquee__seg{white-space:nowrap;}
+.marquee--on .marquee__seg{padding-right:3.2em;}
+.marquee--on .marquee__track{will-change:transform;animation:rec-marquee 16s linear infinite;}
+.marquee--on:hover .marquee__track{animation-play-state:paused;}
+@keyframes rec-marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@media (prefers-reduced-motion:reduce){.marquee--on .marquee__track{animation:none;}}
 .player .applelink{display:inline-block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--sun);text-decoration:none;opacity:.85;transition:.3s;}
 .player .applelink:hover{opacity:1;}
 .player .now{display:flex;justify-content:space-between;align-items:baseline;gap:14px;}

@@ -10,6 +10,62 @@ function fmt(s: number): string {
   return `${m}:${r.toString().padStart(2, "0")}`;
 }
 
+/**
+ * Horizontally scrolling text that only animates when the content overflows its
+ * container. Renders a duplicated segment so the loop is seamless; the CSS pauses
+ * it on hover. Speed is constant (px/sec) regardless of length, so it stays gentle.
+ */
+function Marquee({ text }: { text: string }) {
+  const wrapRef = useRef<HTMLSpanElement>(null);
+  const trackRef = useRef<HTMLSpanElement>(null);
+  const segRef = useRef<HTMLSpanElement>(null);
+  const [scroll, setScroll] = useState(false);
+  const [dur, setDur] = useState(0);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const seg = segRef.current;
+    if (!wrap || !seg) return;
+    const measure = () => setScroll(seg.scrollWidth > wrap.clientWidth + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(wrap);
+    // Web fonts change text width once loaded — re-measure when they settle.
+    document.fonts?.ready.then(measure).catch(() => {});
+    return () => ro.disconnect();
+  }, [text]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!scroll || !track) {
+      setDur(0);
+      return;
+    }
+    // The track holds two copies; one loop travels half its total width.
+    const SPEED = 40; // px per second — slow enough to read, not jarring
+    setDur(track.scrollWidth / 2 / SPEED);
+  }, [scroll, text]);
+
+  return (
+    <span ref={wrapRef} className={`marquee${scroll ? " marquee--on" : ""}`}>
+      <span
+        ref={trackRef}
+        className="marquee__track"
+        style={dur ? { animationDuration: `${dur}s` } : undefined}
+      >
+        <span ref={segRef} className="marquee__seg">
+          {text}
+        </span>
+        {scroll && (
+          <span className="marquee__seg" aria-hidden="true">
+            {text}
+          </span>
+        )}
+      </span>
+    </span>
+  );
+}
+
 /** Glass audio player for SolHous Records. Renders nothing if the shelf is empty. */
 export function RecordsPlayer() {
   const [idx, setIdx] = useState(0);
@@ -61,9 +117,11 @@ export function RecordsPlayer() {
         />
         <div className="pmeta">
           <p className="kindtag">
-            Now playing · {RELEASE.title} — EP · {RELEASE.year}
+            <Marquee text={`Now playing · ${RELEASE.title} — EP · ${RELEASE.year}`} />
           </p>
-          <h3>{track.title}</h3>
+          <h3>
+            <Marquee text={track.title} />
+          </h3>
           <a className="applelink" href={RELEASE.appleUrl} target="_blank" rel="noopener">
             Open in Apple Music ›
           </a>
