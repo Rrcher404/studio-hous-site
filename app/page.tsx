@@ -107,7 +107,7 @@ const rooms: {
     alt: "A flat-lay of a Greensboro shoot plan: mood board, lighting diagram, shot list, and a Polaroid.",
     k: "The Direction Market",
     h: "Direction you can build on",
-    p: "Complete creative direction packages — mood boards, shot lists, lighting, grades, styling. Opening soon.",
+    p: "Complete creative direction packages — mood board, shot list, lighting, grade, styling. Three proven packages, open now from $29.",
   },
   {
     href: "/field-notes/",
