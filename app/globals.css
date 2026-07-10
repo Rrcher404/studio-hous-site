@@ -21,6 +21,18 @@
 :root{
   --haze:#0e110c; --haze-2:#181c14; --milk:#edefe0; --body:#bcc4a8;
   --olive:#a4ac8e; --sun:#cea860; --sand:#b9a073; --ease:cubic-bezier(0.6,0,0.3,1);
+
+  /* Warm liquid glass — chrome only. Outer shadow may be dark;
+     inner highlight stays milk or sun, never cool #fff. Blur capped 12–18px. */
+  --glass-bg:rgba(12,15,10,.5);
+  --glass-border:rgba(237,239,224,.09);
+  --glass-sheen:rgba(237,239,224,.22);
+  --glass-sun-edge:rgba(206,168,96,.18);
+  --glass-blur:16px;
+  --glass-sat:1.08;
+  --glass-radius:12px;
+  --glass-shadow:0 20px 50px -22px rgba(0,0,0,.6);
+  --glass-inset:inset 0 0 24px -12px var(--glass-sheen);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -43,8 +55,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   .cursor.lg{width:44px;height:44px;background:rgba(206,168,96,.85);box-shadow:none;}
 }
 
-/* nav */
-nav.sitenav{position:fixed;top:14px;left:16px;right:16px;z-index:95;display:flex;justify-content:space-between;align-items:center;padding:8px 18px;border-radius:12px;border:1px solid rgba(237,239,224,.08);background:rgba(10,12,8,.38);-webkit-backdrop-filter:blur(14px) saturate(1.08);backdrop-filter:blur(14px) saturate(1.08);box-shadow:inset 0 0 22px -12px rgba(237,239,224,.22),0 16px 40px -24px rgba(0,0,0,.55);}
+/* nav — tokenized warm glass + specular top edge (chrome, at rest, no distort) */
+nav.sitenav{position:fixed;top:14px;left:16px;right:16px;z-index:95;display:flex;justify-content:space-between;align-items:center;padding:8px 18px;border-radius:var(--glass-radius);isolation:isolate;border:1px solid var(--glass-border);background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));box-shadow:var(--glass-inset),var(--glass-shadow);}
+nav.sitenav::before{content:"";position:absolute;left:10px;right:10px;top:0;height:1px;border-radius:1px;pointer-events:none;background:linear-gradient(90deg,transparent 0%,rgba(237,239,224,.35) 20%,rgba(206,168,96,.45) 72%,transparent 100%);}
+nav.sitenav>.brand,nav.sitenav>.navlinks{position:relative;z-index:2;}
 .brand{font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:.18em;font-weight:500;text-decoration:none;white-space:nowrap;}
 .brand .o{color:var(--sun);}
 .navlinks{display:flex;gap:2px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;align-items:center;}
@@ -221,6 +235,8 @@ footer .legal{margin-top:20px;font-size:10.5px;color:var(--olive);opacity:.7;max
 .modal{position:fixed;inset:0;z-index:130;background:rgba(6,8,4,.9);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;}
 .modal.open{display:flex;}
 .booking{position:relative;width:min(560px,100%);background:rgba(24,28,20,.68);border:1px solid rgba(206,168,96,.32);-webkit-backdrop-filter:blur(18px) saturate(1.05);backdrop-filter:blur(18px) saturate(1.05);}
+/* sun rim (border above) marks the transaction; specular hairline, opacity kept high for reading clarity */
+.booking::before{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;pointer-events:none;z-index:1;background:linear-gradient(90deg,transparent,rgba(237,239,224,.4) 40%,rgba(206,168,96,.35) 70%,transparent);}
 .booking .inner{padding:46px 40px;}
 .booking .mk{position:absolute;top:15px;left:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;font-size:10px;color:var(--sun);opacity:.7;}
 .booking .close{position:absolute;top:8px;right:10px;width:44px;height:44px;background:none;border:none;color:var(--milk);font-size:24px;cursor:pointer;opacity:.6;}
@@ -279,9 +295,13 @@ footer .legal{margin-top:20px;font-size:10.5px;color:var(--olive);opacity:.7;max
 /* ============================================================
    glass system + dropdown nav + records player — additive
    ============================================================ */
-.glass{border:1px solid rgba(237,239,224,.09);background:rgba(12,15,10,.5);-webkit-backdrop-filter:blur(16px) saturate(1.08);backdrop-filter:blur(16px) saturate(1.08);box-shadow:inset 0 0 24px -12px rgba(237,239,224,.25),0 20px 50px -22px rgba(0,0,0,.6);}
-.glass.distort{-webkit-backdrop-filter:blur(12px) saturate(1.08);backdrop-filter:url(#glass-distortion) blur(12px) saturate(1.08);}
-@supports not (backdrop-filter:blur(1px)){.glass{background:rgba(14,17,12,.94);}}
+.glass{position:relative;border:1px solid var(--glass-border);background:var(--glass-bg);border-radius:var(--glass-radius);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));box-shadow:var(--glass-inset),var(--glass-shadow);}
+/* Specular hairline: milk→sun, asymmetric toward the action edge. */
+.glass.specular::before{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(237,239,224,.4) 40%,rgba(206,168,96,.35) 70%,transparent);}
+/* Sun rim marks a transaction surface — a modifier, not a second material. */
+.glass.sun-rim{border-color:rgba(206,168,96,.32);}
+.glass.distort{-webkit-backdrop-filter:blur(12px) saturate(var(--glass-sat));backdrop-filter:url(#glass-distortion) blur(12px) saturate(var(--glass-sat));}
+@supports not (backdrop-filter:blur(1px)){.glass,nav.sitenav{background:rgba(14,17,12,.94);}}
 
 /* dropdown nav */
 .navgroup{position:relative;display:inline-block;}
