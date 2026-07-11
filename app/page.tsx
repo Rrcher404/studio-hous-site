@@ -5,6 +5,8 @@ import { Gallery } from "@/components/Gallery";
 import { Footer } from "@/components/Footer";
 import { HeroVeil } from "@/components/HeroVeil";
 import { BookMeButton } from "@/components/BookingModal";
+import { getContent } from "@/lib/content";
+import { renderHeadline, clamp } from "@/components/editable";
 
 export const metadata: Metadata = {
   title: "SolHous — Editorial Photography & Creative House | Greensboro, NC",
@@ -188,7 +190,8 @@ const jsonLd = {
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const hero = await getContent<{ headline: string; sub: string }>("home.hero");
   return (
     <>
       <script
@@ -206,12 +209,8 @@ export default function HomePage() {
         <div className="hero-grad" />
         <div className="hero-content">
           <p className="eyebrow">SolHous · A Creative Hous · Greensboro NC</p>
-          <h1>
-            Welcome to
-            <br />
-            The <em>Hous.</em>
-          </h1>
-          <p className="sub">Not a platform. A building with rooms.</p>
+          <h1>{renderHeadline(clamp(hero.headline, 60))}</h1>
+          <p className="sub">{clamp(hero.sub, 200)}</p>
           <div style={{ marginTop: 30, display: "flex", gap: 14, flexWrap: "wrap" }}>
             <BookMeButton className="btn">Book a session ›</BookMeButton>
             <Link className="btn ghost" href="/sessions/">

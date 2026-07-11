@@ -7,3 +7,7 @@ node_modules/
 /.next/
 /out/
 *.tsbuildinfo
+
+# env — .env.example is the only env file that belongs in git
+.env*
+!.env.example

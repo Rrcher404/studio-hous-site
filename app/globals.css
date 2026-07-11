@@ -375,3 +375,14 @@ footer .legal-links a{color:var(--olive);text-decoration:none;transition:.3s;}
 footer .legal-links a:hover{color:var(--sun);}
 footer .legal-links .linklike{color:var(--olive);text-decoration:none;font:inherit;letter-spacing:inherit;text-transform:inherit;}
 footer .legal-links .linklike:hover{color:var(--sun);}
+
+/* ============================================================
+   announcement bar (chrome — glass allowed) — Panel-controlled,
+   fixed bottom-center so it never shifts layout
+   ============================================================ */
+.annc{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:14px;max-width:min(680px,92vw);padding:10px 14px 10px 20px;}
+.annc .annc-title{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--sun);white-space:nowrap;}
+.annc .annc-body{font-size:13px;line-height:1.5;color:var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.annc .annc-close{background:none;border:none;color:var(--milk);opacity:.6;font-size:18px;line-height:1;cursor:pointer;padding:6px 8px;transition:opacity .3s;}
+.annc .annc-close:hover{opacity:1;}
+@media(max-width:560px){.annc{bottom:12px;gap:10px;padding-left:14px;}.annc .annc-body{display:none;}}

@@ -1,0 +1,266 @@
+{
+  "home.hero": {
+    "headline": "Welcome to\nThe *Hous.*",
+    "sub": "Not a platform. A building with rooms."
+  },
+  "home.rooms": {
+    "cards": [
+      {
+        "href": "/sessions/",
+        "k": "Studio Hous",
+        "h": "Sessions & pricing",
+        "p": "The editorial photography studio the Hous was built around. Portraits, grad, prom, and commercial, from $135."
+      },
+      {
+        "href": "/work/",
+        "k": "Studio Hous",
+        "h": "The portfolio",
+        "p": "The frames that earned their place. A working sample of recent editorial sessions."
+      },
+      {
+        "href": "/direction-market/",
+        "k": "The Direction Market",
+        "h": "Direction you can build on",
+        "p": "Complete creative direction packages — mood board, shot list, lighting, grade, styling. Three proven packages, open now from $29."
+      },
+      {
+        "href": "/field-notes/",
+        "k": "Field Notes",
+        "h": "The editorial practice",
+        "p": "A real day in a working creative's life, documented twice a month. Real people, real days, real work."
+      },
+      {
+        "href": "/spaces/",
+        "k": "SolHous Spaces",
+        "h": "Property & brand",
+        "p": "The room and the people in it, shot with the same eye. Listings, storefronts, and headshots across the Triad."
+      },
+      {
+        "href": "/hous-sites/",
+        "k": "Hous Sites",
+        "h": "Your business, art-directed",
+        "p": "Editorial websites for small businesses and brands, built like editorials, not templates. Blueprint $500, builds from $2,000."
+      },
+      {
+        "href": "/records/",
+        "k": "SolHous Records",
+        "h": "The sound of the Hous",
+        "p": "Echoes of Tomorrow — the debut EP — is out now. Play it here, or anywhere you stream."
+      },
+      {
+        "href": "/housscapes/",
+        "k": "HousScapes",
+        "h": "Custom sound",
+        "p": "Send the brief, get a track built around your content — not pulled from a library. Custom sound by SolHous Records."
+      }
+    ]
+  },
+  "home.firstwords": {
+    "quote": "The first galleries are being made right now. When the words come, they'll arrive unedited, in the client's own voice — or they won't arrive at all. We'd rather show you an honest blank than a borrowed quote.",
+    "by": "honest by design"
+  },
+  "work.hero": {
+    "eyebrow": "Studio Hous · Selected Work · Greensboro NC",
+    "headline": "Every image earns\nits *place.*",
+    "sub": "Editorial direction, premium editing, a curated gallery. The same eye on every session — a graduation portrait or a brand shoot."
+  },
+  "sessions.hero": {
+    "headline": "Sessions start\nat *$135.*",
+    "sub": "Every session includes real creative direction, premium editing, and a gallery that's curated, not dumped — every frame one we'd stand behind. You'll know the scope and the price before you put anything down."
+  },
+  "sessions.portraits": {
+    "cats": [
+      {
+        "name": "Portraits",
+        "season": "Personal branding · creatives",
+        "tiers": [
+          { "n": "Signature", "small": "60 min · 15–20 images", "pr": "$150" },
+          { "n": "Portrait Plus", "small": "120 min · 20–35 images · reels", "pr": "$225" },
+          { "n": "Editorial / Concept", "small": "2–3 hrs · 50–75 images", "pr": "$450" }
+        ]
+      },
+      {
+        "name": "Graduation",
+        "season": "Peak Mar–Jun · book 4–12 wks ahead",
+        "tiers": [
+          { "n": "Mini", "small": "30 min · 10–15 images", "pr": "$135" },
+          { "n": "Signature", "pop": "Most loved", "small": "60 min · 20–30 images · reels", "pr": "$270" },
+          { "n": "Deluxe", "small": "90 min · 35–50 images", "pr": "$425" }
+        ]
+      },
+      {
+        "name": "Prom",
+        "season": "Peak Apr–Jun · 24–48 hr delivery",
+        "tiers": [
+          { "n": "Express", "small": "30 min · 12–18 images", "pr": "$175" },
+          { "n": "Signature", "pop": "Most loved", "small": "60 min · 20–30 images · reels", "pr": "$275" },
+          { "n": "Group (4–6)", "small": "90 min · 30–50 images", "pr": "$375" }
+        ]
+      }
+    ]
+  },
+  "sessions.property": {
+    "cards": [
+      {
+        "h": "Real Estate",
+        "p": "Fast, clean listing photography with the same editorial eye. MLS-ready galleries.",
+        "meta": "From $150 · 24–48 hr delivery"
+      },
+      {
+        "h": "Commercial",
+        "p": "Brand and organizational imagery — product, team, and space, quoted to your scope.",
+        "meta": "Quoted per project · let's talk"
+      }
+    ]
+  },
+  "sessions.events": {
+    "intro": "Weddings, corporate events, and the celebrations in between. The same editorial eye, working a room instead of a set: the planned frames on the run of show, and the ones nobody planned that end up mattering more.",
+    "cards": [
+      {
+        "h": "Weddings",
+        "p": "Coverage built around your timeline, not a shot-list template. Direction where it helps, invisibility where it counts, and a gallery curated like an editorial.",
+        "meta": "Quoted per wedding · dates hold with a deposit"
+      },
+      {
+        "h": "Corporate & Private Events",
+        "p": "Conferences, galas, launches, retreats, and the parties worth remembering. Keynotes, candids, details, and the room itself — delivered ready for your channels.",
+        "meta": "Quoted to your run of show · let's talk"
+      }
+    ],
+    "held": "Every event is scoped on a call first: hours of coverage, the moments that cannot be missed, and delivery timeline. You'll have the whole number before you hold the date."
+  },
+  "field-notes.hero": {
+    "headline": "Field *Notes.*",
+    "sub": "Some stories take a day. Some stories take a season. All of them are worth the time it takes to get them right.",
+    "intro": "Field Notes is a biweekly, long-form, day-in-the-life editorial series documenting working creatives — photographers, designers, founders, students, audio engineers, muralists, art teachers — across the Greensboro creative middle class and beyond. Numbered issues. A permanent archive. Published by Studio Hous, under SolHous."
+  },
+  "direction-market.packages": {
+    "items": [
+      {
+        "slug": "final-touches",
+        "tier": "Single-scene · $29",
+        "name": "Final Touches",
+        "pitch": "The grad photo everyone takes, directed like the night it actually was. One hallway, sixteen frames."
+      },
+      {
+        "slug": "dockside",
+        "tier": "Standard · $49",
+        "name": "Dockside",
+        "pitch": "Shoot summer like it owes you nothing. Four setups, the hardest light of the day made the point."
+      },
+      {
+        "slug": "downtown-runway",
+        "tier": "Flagship · $79",
+        "name": "Downtown Is the Runway",
+        "pitch": "Six blocks, one subject, no studio. The city does the set design. Twenty frames, gold into blue hour."
+      }
+    ]
+  },
+  "spaces.hero": {
+    "headline": "The studio for agents and owners\nwho refuse to look like *everyone else.*",
+    "sub": "We photograph the room, and the people who live and work in it, with the same eye."
+  },
+  "spaces.pricing": {
+    "includes": "Storefronts from $250 · Listings from $175 · Agents from $225 · Development quoted to scope",
+    "cats": [
+      {
+        "name": "The Storefront",
+        "season": "From $250 · restaurants · cafes · shops · salons",
+        "blurb": "The room your customers walk into, photographed the way it actually feels at the good hour.",
+        "tiers": [
+          { "n": "Mini", "small": "1 hr · 15–20 images · interior + details", "pr": "$250" },
+          { "n": "Session", "small": "2–3 hr · 30–40 images · interior, ambiance, product/food", "pr": "$475" },
+          { "n": "+ Brand", "small": "Half-day · interior + product + owner/team portraits + 3 vertical clips", "pr": "$895" }
+        ],
+        "note": "I shoot during your slow hours so it never touches service."
+      },
+      {
+        "name": "The Listing",
+        "season": "From $175 · MLS · print · the scroll",
+        "blurb": "Your property, read for light before it's read for square footage.",
+        "tiers": [
+          { "n": "Quick", "small": "Up to 1,500 sqft · 25–30 photos · next day by noon", "pr": "$175" },
+          { "n": "Standard", "pop": "Most booked", "small": "1,500–2,500 sqft · 35–45 photos · next day by noon", "pr": "$235" },
+          { "n": "Showcase", "small": "2,500–4,000 sqft · 50–60 photos · 24–48 hrs", "pr": "$315" },
+          { "n": "Estate", "small": "4,000+ sqft · 65+ photos · 48 hrs", "pr": "from $425" }
+        ]
+      },
+      {
+        "name": "The Agent",
+        "season": "From $225 · personal branding",
+        "blurb": "You, on your own listing. Personal branding that matches the work, so the face and the houses finally look like one practice.",
+        "tiers": [
+          { "n": "Headshot Refresh", "small": "45 min · 3 looks · all crops", "pr": "$225" },
+          { "n": "Agent Brand Day, Mini", "small": "1.5 hr · 1 location · headshots + 15 stills", "pr": "$475" },
+          { "n": "Agent Brand Day, Full", "small": "Half-day · 2 looks · 30 stills + 3 clips", "pr": "$950" }
+        ]
+      }
+    ],
+    "development": {
+      "h": "The Development",
+      "p": "Commercial spaces and ground-up projects. Scope is the conversation.",
+      "meta": "Half-days from $475 · let's talk"
+    },
+    "held": "Listing add-ons: Twilight exterior $150 · 3D tour $150 · 2D floor plan $59 ($49 with 3D) · Agent video walkthrough $425 · Virtual staging $40/room · Object removal $20/image. All prices plus NC sales tax."
+  },
+  "hous-sites.position": {
+    "headline": "Built like editorials,\nnot *templates.*",
+    "body": "Most small-business sites come off a template shelf and look like it. Hous Sites treats your website like an editorial: direction first, then design, then a build you can live in without a developer on retainer."
+  },
+  "hous-sites.builds": {
+    "cards": [
+      {
+        "name": "Hous Blueprint",
+        "season": "Paid discovery · every build starts here",
+        "blurb": "A discovery sprint that ends in a plan you own, whether or not we build it.",
+        "tiers": [
+          { "n": "The sprint", "small": "60-min call · editorial direction memo · sitemap · fixed quote", "pr": "$500" }
+        ],
+        "note": "100% credited toward your build within 30 days."
+      },
+      {
+        "name": "Hous Editorial",
+        "season": "Up to 5 pages · about 3 weeks",
+        "blurb": "Editorial-grade design for the business that needs one site done right.",
+        "tiers": [
+          { "n": "The build", "small": "up to 5 pages · contact form + SEO", "pr": "$2,000" },
+          { "n": "Launch + care", "small": "go-live · 90 days of Hous Care", "pr": "included" },
+          { "n": "Hous Panel", "small": "edit it yourself · optional add-on", "pr": "+ $500" }
+        ]
+      },
+      {
+        "name": "Hous Flagship",
+        "season": "Up to 10 pages · CMS · commerce-lite",
+        "blurb": "The larger build: collections, booking or commerce-lite, and imagery treated with the studio's eye.",
+        "tiers": [
+          { "n": "The build", "small": "up to 10 pages · CMS collections · booking or commerce-lite", "pr": "$3,500" },
+          { "n": "Photo treatment", "small": "art-directed with Studio Hous", "pr": "included" },
+          { "n": "Launch + care", "small": "go-live · 90 days of Hous Care+", "pr": "included" },
+          { "n": "Hous Panel", "small": "edit it yourself · optional add-on", "pr": "+ $500" }
+        ]
+      }
+    ],
+    "held": "The Blueprint ends in a fixed quote. The number you sign is the number you pay, and the $500 comes off it when you build within 30 days."
+  },
+  "hous-sites.panel": {
+    "headline": "You hold the words.\nWe hold the *taste.*",
+    "body": "The Hous Panel is a white-label dashboard you can add to either build for $500. Your hours, your announcements, your words and images, editable by you in the browser at any hour. The layout, the type, the spacing, the color: locked. The client controls content; the studio controls taste. Skip it, and we make your changes for you inside your care plan's included time.",
+    "promise": "You can't break it. We made sure.",
+    "promiseBy": "the Hous Panel promise"
+  },
+  "hous-sites.care": {
+    "cards": [
+      {
+        "h": "Hous Care",
+        "p": "Hosting, backups, monitoring, 30 minutes of assistance each month, a quarterly editorial check-in on the words, and the Hous Panel where you've added it.",
+        "meta": "$150/mo · 90 days included with every build"
+      },
+      {
+        "h": "Hous Care+",
+        "p": "Everything in Hous Care, plus 2 hours of design work each month, a seasonal refresh each quarter, a traffic snapshot, and 48-hour priority.",
+        "meta": "$275/mo · 90 days included with Flagship"
+      }
+    ],
+    "held": "After the included 90 days, care continues month to month on the card on file. Cancel any time with 30 days' notice, and your site and content export with you."
+  }
+}
