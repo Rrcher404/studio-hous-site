@@ -216,6 +216,11 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
             ×
           </button>
           <div className="inner">
+            <div className="bk-prog" aria-hidden="true">
+              {[0, 1, 2, 3].map((i) => (
+                <span key={i} className={i <= Math.min(step, 3) ? "on" : ""} />
+              ))}
+            </div>
             <div className={`step${step === 0 ? " active" : ""}`} data-step="0">
               <div className="ask">When&rsquo;s the day?</div>
               <div className="hint">

@@ -7,6 +7,7 @@ import { HeroVeil } from "@/components/HeroVeil";
 import { BookMeButton } from "@/components/BookingModal";
 import { getContent } from "@/lib/content";
 import { renderHeadline, clamp } from "@/components/editable";
+import { StickyStack, BentoGrid, SplitSticky, type BentoCell } from "@/components/motion";
 
 export const metadata: Metadata = {
   title: "SolHous — Editorial Photography & Creative House | Greensboro, NC",
@@ -172,6 +173,49 @@ export default async function HomePage() {
     getContent<{ quote: string; by: string }>("home.firstwords"),
   ]);
   const rooms = roomChrome.map((chrome, i) => ({ ...chrome, ...(roomsContent.cards[i] ?? {}), href: chrome.href }));
+
+  // The "doors" sticky deck (P2) walks the five commercial rooms in intent order;
+  // the remaining rooms stay reachable in a quiet grid below (bento upgrade = P4).
+  const STACK_HREFS = ["/sessions/", "/work/", "/direction-market/", "/spaces/", "/hous-sites/"];
+  const stackItems = STACK_HREFS.map((h) => rooms.find((r) => r.href === h))
+    .filter((r): r is (typeof rooms)[number] => Boolean(r))
+    .map((r) => ({
+      href: r.href,
+      kicker: clamp(r.k ?? "", 24),
+      title: clamp(r.h ?? "", 40),
+      body: clamp(r.p ?? "", 160),
+      image: { src: r.img, alt: r.alt, position: r.imgPos },
+      ctaLabel: "Enter",
+    }));
+  const overflowRooms = rooms.filter((r) => !STACK_HREFS.includes(r.href));
+
+  // The bento (P4) gives the non-stack rooms a scannable band + a Book tile.
+  const byHref = (h: string) => overflowRooms.find((r) => r.href === h);
+  const rec = byHref("/records/");
+  const hs = byHref("/housscapes/");
+  const fn = byHref("/field-notes/");
+  const bentoCells: BentoCell[] = [
+    rec && {
+      id: "records", span: "lg" as const, href: rec.href,
+      kicker: clamp(rec.k ?? "", 24), title: clamp(rec.h ?? "", 40), body: clamp(rec.p ?? "", 120),
+      media: { src: rec.img, position: rec.imgPos },
+    },
+    hs && {
+      id: "housscapes", span: "sm" as const, href: hs.href,
+      kicker: clamp(hs.k ?? "", 24), title: clamp(hs.h ?? "", 40),
+      media: { src: hs.img, position: hs.imgPos },
+    },
+    fn && {
+      id: "fieldnotes", span: "md" as const, href: fn.href,
+      kicker: clamp(fn.k ?? "", 24), title: clamp(fn.h ?? "", 40), body: clamp(fn.p ?? "", 120),
+      media: { src: fn.img, position: fn.imgPos },
+    },
+    {
+      id: "book", span: "md" as const, book: true,
+      kicker: "Hold a date", title: "Book a session",
+      body: "Portraits, grad, prom, and events. Sessions from $135.",
+    },
+  ].filter(Boolean) as BentoCell[];
   return (
     <>
       <script
@@ -205,40 +249,27 @@ export default async function HomePage() {
 
       <main id="main">
         <section aria-labelledby="rooms-h">
-          <Reveal className="block" id="rooms">
-            <p className="roll">Roll 001 · the rooms</p>
-            <h2 className="big" id="rooms-h">
-              One Hous.
-              <br />
-              Every door <em>open.</em>
-            </h2>
-            <p className="muted">
-              SolHous started as a photography studio and grew the way a Hous does — a room at a time,
-              each one built because the work asked for it. Studio Hous is the founding room. Every door
-              is below. Walk in anywhere.
-            </p>
-            <div className="uni">
-              {rooms.map((card) => (
-                <Link key={card.href} href={card.href}>
-                  <div className="im">
-                    {/* Decorative inside a text-labeled card link — empty alt keeps the link name short for screen readers. */}
-                    <img
-                      src={card.img}
-                      alt=""
-                      loading="lazy"
-                      style={card.imgPos ? { objectPosition: card.imgPos } : undefined}
-                    />
-                  </div>
-                  <div className="tx">
-                    <span className="k">{clamp(card.k ?? "", 24)}</span>
-                    <h3>{clamp(card.h ?? "", 40)}</h3>
-                    <p>{clamp(card.p ?? "", 160)}</p>
-                    <span className="go">Enter ›</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </Reveal>
+          {/* Heading reveals; the sticky deck is a SIBLING — never inside .rv,
+              whose transform would break position:sticky in the cards. */}
+          <div className="block" id="rooms">
+            <Reveal>
+              <p className="roll">Roll 001 · the rooms</p>
+              <h2 className="big" id="rooms-h">
+                One Hous.
+                <br />
+                Every door <em>open.</em>
+              </h2>
+              <p className="muted">
+                SolHous started as a photography studio and grew the way a Hous does — a room at a time,
+                each one built because the work asked for it. Studio Hous is the founding room. Walk the
+                doors below, then find the rest of the Hous underneath.
+              </p>
+            </Reveal>
+            <StickyStack items={stackItems} skipToId="after-doors" label="The doors of the Hous" />
+            <span id="after-doors" data-motion-anchor tabIndex={-1} />
+            <p className="motion-stack__more">The rest of the Hous</p>
+            <BentoGrid cells={bentoCells} />
+          </div>
         </section>
 
         <section aria-labelledby="work-h">
@@ -298,42 +329,49 @@ export default async function HomePage() {
           </Reveal>
         </section>
 
-        <section aria-labelledby="creed-h">
-          <Reveal className="block" id="creed">
-            <p className="roll">Roll 004 · how the Hous works</p>
-            <h2 className="big" id="creed-h">
-              Three convictions,
-              <br />
-              every <em>room.</em>
-            </h2>
-            <p className="muted">Everything in the Hous runs on the same three.</p>
-            <div className="princ">
-              <div className="p">
-                <span className="k">Curation over algorithm</span>
-                <h3>A person chooses</h3>
-                <p>
-                  Nothing here is ranked by a machine. Work gets selected by a trained eye and published
-                  with the reason why.
-                </p>
+        <section aria-label="How the Hous works">
+          {/* SplitSticky pins the thesis while the three convictions scroll past.
+              Not wrapped in Reveal — its transform would break the sticky column. */}
+          <div className="block" id="creed">
+            <SplitSticky
+              eyebrow="Roll 004 · how the Hous works"
+              title={
+                <>
+                  Three convictions,
+                  <br />
+                  every <em>room.</em>
+                </>
+              }
+              body={<p className="muted" style={{ margin: 0 }}>Everything in the Hous runs on the same three.</p>}
+            >
+              <div className="princ" style={{ gridTemplateColumns: "1fr", marginTop: 0, gap: "clamp(20px,3vw,32px)" }}>
+                <div className="p">
+                  <span className="k">Curation over algorithm</span>
+                  <h3>A person chooses</h3>
+                  <p>
+                    Nothing here is ranked by a machine. Work gets selected by a trained eye and published
+                    with the reason why.
+                  </p>
+                </div>
+                <div className="p">
+                  <span className="k">Direction over content</span>
+                  <h3>The frame starts on paper</h3>
+                  <p>
+                    Mood boards, shot lists, lighting plans — the decisions behind the frame are worth as
+                    much as the frame. We treat them that way.
+                  </p>
+                </div>
+                <div className="p">
+                  <span className="k">Recognition over reach</span>
+                  <h3>Credit is written out</h3>
+                  <p>
+                    Field Notes documents the people doing the work, twice a month, in their own
+                    words. Names attached, always.
+                  </p>
+                </div>
               </div>
-              <div className="p">
-                <span className="k">Direction over content</span>
-                <h3>The frame starts on paper</h3>
-                <p>
-                  Mood boards, shot lists, lighting plans — the decisions behind the frame are worth as
-                  much as the frame. We treat them that way.
-                </p>
-              </div>
-              <div className="p">
-                <span className="k">Recognition over reach</span>
-                <h3>Credit is written out</h3>
-                <p>
-                  Field Notes documents the people doing the work, twice a month, in their own
-                  words. Names attached, always.
-                </p>
-              </div>
-            </div>
-          </Reveal>
+            </SplitSticky>
+          </div>
         </section>
 
         <section aria-labelledby="fw-h">

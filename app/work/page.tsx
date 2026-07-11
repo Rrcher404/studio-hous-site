@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { Gallery } from "@/components/Gallery";
 import { Footer } from "@/components/Footer";
 import { BookMeButton } from "@/components/BookingModal";
+import { LookbookBand } from "@/components/motion";
 import Link from "next/link";
 import { getContent } from "@/lib/content";
 import { renderHeadline, clamp } from "@/components/editable";
@@ -52,6 +53,13 @@ const gallery = [
   caption: item.caption,
 }));
 
+/** A curated cinematic subset for the horizontal lookbook, reusing gallery data
+ *  (full-res frames) so captions/alt stay in one place. */
+const LOOKBOOK_NS = ["36", "01", "25", "24", "05", "09", "31", "37"];
+const lookbook = LOOKBOOK_NS.map((n) => gallery.find((g) => g.full.endsWith(`portrait-${n}.jpg`)))
+  .filter((g): g is (typeof gallery)[number] => Boolean(g))
+  .map((g) => ({ src: g.full, alt: g.alt, caption: g.caption }));
+
 export default async function WorkPage() {
   const hero = await getContent<{ eyebrow: string; headline: string; sub: string }>("work.hero");
   return (
@@ -64,9 +72,26 @@ export default async function WorkPage() {
       />
 
       <main id="main">
+        <section aria-labelledby="look-h">
+          <div className="block" id="lookbook">
+            <p className="roll rv">Roll 001 · the lookbook</p>
+            <h2 className="big rv" id="look-h" style={{ marginBottom: 8 }}>
+              A walk through
+              <br />
+              the <em>work.</em>
+            </h2>
+            <p className="muted rv" style={{ marginBottom: 4 }}>
+              A curated pass through recent editorial frames — scroll sideways, take your time.
+              The full archive is below.
+            </p>
+            <LookbookBand items={lookbook} label="Selected editorial frames" skipToId="after-lookbook" />
+          </div>
+        </section>
+        <span id="after-lookbook" data-motion-anchor tabIndex={-1} />
+
         <section aria-labelledby="gal-h">
           <div className="block" id="gallery">
-            <p className="roll rv">Roll 001 · the gallery</p>
+            <p className="roll rv">Roll 002 · the gallery</p>
             <h2 className="big rv" id="gal-h" style={{ marginBottom: 8 }}>
               Not the pose.
               <br />
@@ -82,7 +107,7 @@ export default async function WorkPage() {
 
         <section aria-labelledby="appr-h">
           <Reveal className="block" id="approach">
-            <p className="roll">Roll 002 · the approach</p>
+            <p className="roll">Roll 003 · the approach</p>
             <h2 className="big" id="appr-h">
               We don&rsquo;t shoot volume.
               <br />
@@ -112,7 +137,7 @@ export default async function WorkPage() {
 
         <section aria-labelledby="cta-h">
           <Reveal className="block" id="cta">
-            <p className="roll">Roll 003 · your turn</p>
+            <p className="roll">Roll 004 · your turn</p>
             <h2 className="big" id="cta-h">
               Your moment deserves
               <br />

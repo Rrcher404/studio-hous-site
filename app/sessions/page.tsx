@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { Footer } from "@/components/Footer";
 import { BookMeButton } from "@/components/BookingModal";
+import { ExpandDetail } from "@/components/motion";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -93,6 +94,15 @@ export default function SessionsPage() {
                   </div>
                   <div className="pr">$450</div>
                 </div>
+                <ExpandDetail id="portraits" summary="What's included" ariaLabel="Portraits — what's included">
+                  <ul>
+                    <li><b>Creative direction</b> built with you before the shoot — location, styling, references.</li>
+                    <li><b>Premium editing</b> on every delivered frame, color and skin finished by hand.</li>
+                    <li>A <b>curated gallery</b>, not a card dump — only the frames that earned their place.</li>
+                    <li>Portrait Plus and Editorial add <b>social-ready reels</b> cut from the session.</li>
+                    <li>Typical delivery <b>about two weeks</b>; a styling consultation is included on every tier.</li>
+                  </ul>
+                </ExpandDetail>
               </div>
               <div className="cat">
                 <h3>Graduation</h3>
@@ -118,6 +128,15 @@ export default function SessionsPage() {
                   </div>
                   <div className="pr">$425</div>
                 </div>
+                <ExpandDetail id="graduation" summary="What's included" ariaLabel="Graduation — what's included">
+                  <ul>
+                    <li>The full session standard — <b>direction, premium editing, a curated gallery</b>.</li>
+                    <li><b>One guest welcome</b> on the day; a styling consult included before it.</li>
+                    <li>Signature and Deluxe include <b>vertical reels</b> for sharing the night.</li>
+                    <li>In peak season (Mar–Jun), <b>book 4–12 weeks ahead</b> to hold your date.</li>
+                    <li>A <b>30% retainer</b> holds the date; the balance is due 48 hours before.</li>
+                  </ul>
+                </ExpandDetail>
               </div>
               <div className="cat">
                 <h3>Prom</h3>
@@ -143,6 +162,15 @@ export default function SessionsPage() {
                   </div>
                   <div className="pr">$375</div>
                 </div>
+                <ExpandDetail id="prom" summary="What's included" ariaLabel="Prom — what's included">
+                  <ul>
+                    <li><b>24–48 hour delivery</b> — polished photos before the night moves on.</li>
+                    <li>The full standard: <b>direction, premium editing, a curated gallery</b>.</li>
+                    <li>Signature includes <b>reels</b>; Group covers <b>four to six</b> in one booking.</li>
+                    <li>A <b>styling consult</b> is included, and one extra guest is always welcome.</li>
+                    <li>A <b>30% retainer</b> holds the date; the balance is due 48 hours before.</li>
+                  </ul>
+                </ExpandDetail>
               </div>
             </div>
           </div>

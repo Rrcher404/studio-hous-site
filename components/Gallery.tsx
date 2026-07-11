@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 export type GalleryItem = {
   thumb: string;
@@ -13,6 +13,33 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const lastFocusRef = useRef<HTMLElement | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Cascade entrance (M8): a subtle, once-per-view stagger as the grid enters.
+  // `cascade` is applied by JS only, so no-JS and reduced-motion users get every
+  // thumb immediately (the class is never added, and the CSS start-state with it).
+  const galRef = useRef<HTMLDivElement>(null);
+  const [cascade, setCascade] = useState(false);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const el = galRef.current;
+    if (reduce || !el || !("IntersectionObserver" in window)) return;
+    setCascade(true);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setInView(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   function openAt(i: number) {
     lastFocusRef.current = document.activeElement as HTMLElement;
@@ -49,12 +76,17 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
 
   return (
     <>
-      <div className="gal" role="list">
+      <div
+        className={`gal${cascade ? " cascade" : ""}${inView ? " in" : ""}`}
+        role="list"
+        ref={galRef}
+      >
         {items.map((item, i) => (
           <figure
             key={item.full}
             data-full={item.full}
             tabIndex={0}
+            style={{ "--i": i } as CSSProperties}
             onClick={() => openAt(i)}
             onKeyDown={(e) => {
               if (e.key === "Enter") openAt(i);

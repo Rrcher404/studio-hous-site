@@ -22,6 +22,16 @@
   --haze:#0e110c; --haze-2:#181c14; --milk:#edefe0; --body:#bcc4a8;
   --olive:#a4ac8e; --sun:#cea860; --sand:#b9a073; --ease:cubic-bezier(0.6,0,0.3,1);
 
+  /* Motion system (P1). One easing (--ease) shared with the whole site; these
+     add durations, the fixed-nav offset for sticky pins, and the stack depth
+     range. Full contracts in the "Motion system" section at the foot of this file. */
+  --nav-h:68px;                 /* nav.sitenav: top:14px + ~54px tall */
+  --motion-fast:.4s;
+  --motion-mid:.7s;
+  --motion-slow:.9s;
+  --stack-top:calc(var(--nav-h) + clamp(12px,2vw,24px));
+  --stack-scale-min:.92;        /* covered cards settle to this (depth, not shrink) */
+
   /* Warm liquid glass — chrome only. Outer shadow may be dark;
      inner highlight stays milk or sun, never cool #fff. Blur capped 12–18px. */
   --glass-bg:rgba(12,15,10,.5);
@@ -386,3 +396,157 @@ footer .legal-links .linklike:hover{color:var(--sun);}
 .annc .annc-close{background:none;border:none;color:var(--milk);opacity:.6;font-size:18px;line-height:1;cursor:pointer;padding:6px 8px;transition:opacity .3s;}
 .annc .annc-close:hover{opacity:1;}
 @media(max-width:560px){.annc{bottom:12px;gap:10px;padding-left:14px;}.annc .annc-body{display:none;}}
+
+/* ============================================================
+   Motion system (P1) — shared primitives for the sticky stack,
+   expand-to-detail, bento, split-sticky, lookbook, and cascade.
+   ------------------------------------------------------------
+   CONTRACTS (rules authored in the phase that first renders them,
+   so nothing is styled blind):
+     .motion-stack / .motion-stack__card   — sticky pin+cover doors  (P2)
+     .motion-bento  / .motion-bento__cell   — editorial overview grid (P4)
+     .split-sticky                          — sticky copy + media col (P4)
+     .lookbook / .lookbook__frame           — horizontal scroll-snap  (P5)
+     .motion-cascade > *                    — IO stagger entrance      (P6/P8)
+   LAWS:
+     - Animate transform/opacity/clip-path only. Never top/left/width.
+     - Live in `main` (z-index 2). Never mint a z-index here — nav (95),
+       booking modal (130) and the skip link (200) must always win.
+     - The global reduced-motion killswitch (top of file) already voids
+       every animation + transition, incl. scroll-driven `animation-timeline`.
+       So new CSS motion is reduced-motion-safe by default; JS-driven pieces
+       branch on the usePrefersReducedMotion hook instead.
+   ============================================================ */
+
+/* Keyboard escape hatch out of a theater region (SkipRegion component).
+   Off-screen until focused, then styled like the global .skip pill. */
+.motion-skip{position:absolute;left:-999px;top:0;z-index:3;background:var(--sun);color:var(--haze);padding:9px 15px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;}
+.motion-skip:focus{left:50%;top:8px;transform:translateX(-50%);}
+/* Target that receives focus after a skip — never shows an outline itself. */
+[data-motion-anchor]{scroll-margin-top:var(--stack-top);}
+[data-motion-anchor]:focus{outline:none;}
+
+/* Expand-to-detail (M3, P3) — inline disclosure. Trigger reads like an
+   editorial meta link; panel reveals via grid-rows 0fr->1fr (auto-height,
+   one-shot per click). Reduced-motion killswitch makes it instant. */
+.expand{margin-top:18px;border-top:1px solid rgba(237,239,224,.1);}
+.expand__trig{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;background:none;border:none;cursor:pointer;padding:14px 0 4px;color:var(--sun);font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;text-align:left;transition:color .3s var(--ease);}
+.expand__trig:hover{color:var(--milk);}
+.expand__chev{font-size:12px;line-height:1;transition:transform var(--motion-fast) var(--ease);}
+.expand[data-open] .expand__chev{transform:rotate(180deg);}
+.expand__panel{overflow:hidden;height:0;transition:height var(--motion-fast) var(--ease);}
+.expand__inner{opacity:0;transition:opacity var(--motion-fast) var(--ease);}
+.expand[data-open] .expand__inner{opacity:1;}
+.expand__inner ul{list-style:none;padding:14px 0 6px;margin:0;}
+.expand__inner li{position:relative;padding:7px 0 7px 20px;font-size:clamp(13px,1vw,14.5px);line-height:1.6;color:var(--body);border-top:1px solid rgba(237,239,224,.07);}
+.expand__inner li:first-child{border-top:none;}
+.expand__inner li::before{content:"—";position:absolute;left:0;color:var(--sun);opacity:.75;}
+.expand__inner li b{color:var(--milk);font-weight:500;}
+
+/* Lookbook band (M6, P5) — native horizontal collection walk. No scrub, no
+   wheel hijack; scroll-snap only. Nothing animates on its own -> reduced-motion
+   needs no special-casing. */
+.lookbook-band{position:relative;margin-top:clamp(30px,4vw,44px);}
+.lookbook{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-left:2px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(206,168,96,.5) transparent;}
+.lookbook:focus-visible{outline:2px solid var(--sun);outline-offset:4px;}
+.lookbook::-webkit-scrollbar{height:3px;}
+.lookbook::-webkit-scrollbar-thumb{background:rgba(206,168,96,.5);border-radius:2px;}
+.lookbook::-webkit-scrollbar-track{background:rgba(237,239,224,.06);}
+.lookbook__track{display:flex;gap:14px;list-style:none;padding:0 0 16px;margin:0;width:max-content;}
+.lookbook__frame{position:relative;flex:0 0 auto;width:clamp(240px,42vw,420px);aspect-ratio:3/4;overflow:hidden;background:var(--haze-2);scroll-snap-align:start;}
+.lookbook__frame img{width:100%;height:100%;object-fit:cover;filter:saturate(.94) contrast(1.02);}
+.lookbook__frame::after{content:"";position:absolute;inset:auto 0 0 0;height:46%;pointer-events:none;background:linear-gradient(to top,rgba(6,8,4,.72),transparent);}
+.lookbook__cap{position:absolute;left:12px;right:12px;bottom:12px;z-index:1;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--milk);opacity:.86;line-height:1.5;text-shadow:0 1px 8px rgba(0,0,0,.7);}
+.lookbook__hint{position:absolute;top:-28px;right:2px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--sun);opacity:.6;pointer-events:none;}
+/* Right-edge fade cues that more frames wait offscreen. */
+.lookbook-band::after{content:"";position:absolute;top:0;right:0;bottom:19px;width:56px;pointer-events:none;background:linear-gradient(to right,transparent,var(--haze));}
+
+/* Gallery cascade entrance (M8, P6) — subtle stagger, once per view. The
+   `cascade` class is added by JS only; without it (no-JS / reduced-motion) every
+   thumb shows at full opacity. Delay is capped so a long masonry's tail is quick. */
+/* Hidden start snaps instantly (no transition here) so adding `cascade` never
+   flashes a fade-out; the transition lives on `.in` so only the entrance plays. */
+.gal.cascade figure{opacity:0;transform:translateY(14px);}
+.gal.cascade.in figure{opacity:1;transform:none;transition:opacity .55s var(--ease),transform .55s var(--ease);transition-delay:calc(min(var(--i,0),8) * 55ms);}
+
+/* Numbered-steps timeline spine (M7, P6) — a thin rail left of the numerals
+   ties the steps into one sequence. Clarity, not animation. */
+.steps{position:relative;}
+.steps::before{content:"";position:absolute;left:2px;top:36px;bottom:36px;width:1px;pointer-events:none;background:linear-gradient(to bottom,rgba(206,168,96,.45),rgba(206,168,96,.06));}
+.step-r .num{position:relative;padding-left:16px;}
+
+/* Booking wizard progress (M7, P6) — a 4-segment fill that reinforces the
+   textual "n / 4" without touching the submit path. Chrome, so glass/transition
+   are fine; killswitch makes the fill instant under reduced-motion. */
+.bk-prog{display:flex;gap:6px;margin-bottom:26px;}
+.bk-prog span{flex:1;height:2px;background:rgba(237,239,224,.14);transition:background var(--motion-fast) var(--ease);}
+.bk-prog span.on{background:var(--sun);}
+
+/* Sticky stack (M2, P2) — pin-and-cover "doors" deck. Pure CSS sticky; opaque
+   cards so each covers the one before. NEVER place inside .rv/Reveal (a transform
+   ancestor kills sticky). The cover IS the motion — nothing to reduce-motion. */
+.motion-stack{position:relative;margin-top:clamp(34px,4.5vw,48px);}
+.motion-stack__card{position:sticky;top:var(--stack-top);display:grid;grid-template-columns:1.05fr .95fr;min-height:min(74svh,600px);margin-bottom:18px;background:var(--haze-2);border:1px solid rgba(237,239,224,.12);overflow:hidden;text-decoration:none;color:var(--milk);transition:border-color .5s var(--ease);}
+.motion-stack__card:last-child{margin-bottom:0;}
+.motion-stack__card:hover{border-color:rgba(206,168,96,.4);}
+.motion-stack__media{position:relative;overflow:hidden;background:var(--haze);}
+.motion-stack__media img{width:100%;height:100%;object-fit:cover;filter:saturate(.92) brightness(.82);transition:transform .8s var(--ease);}
+.motion-stack__card:hover .motion-stack__media img{transform:scale(1.03);}
+.motion-stack__tx{display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,4vw,54px);}
+.motion-stack__k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--olive);margin-bottom:12px;}
+.motion-stack__h{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.6vw,46px);font-weight:500;line-height:1.05;margin-bottom:14px;}
+.motion-stack__p{color:var(--body);font-size:clamp(14px,1.05vw,16px);line-height:1.7;max-width:42ch;}
+.motion-stack__go{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sun);margin-top:24px;transition:letter-spacing var(--motion-fast) var(--ease);}
+.motion-stack__card:hover .motion-stack__go{letter-spacing:.22em;}
+/* Mobile (Gate G2): drop the pin — plain vertical list, same content + CTAs. */
+@media(max-width:760px){
+  .motion-stack__card{position:relative;top:auto;grid-template-columns:1fr;min-height:0;}
+  .motion-stack__media{aspect-ratio:16/10;}
+}
+/* Lead-in for the non-stacked overflow rooms sitting below the deck. */
+.motion-stack__more{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--olive);margin:clamp(44px,6vw,68px) 0 18px;}
+
+/* Editorial bento (M4, P4) — asymmetric scan grid; static, the quiet counter
+   to the stack theater. 6-col track; sm/md/lg spans; collapses on mobile. */
+.motion-bento{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;grid-auto-rows:1fr;}
+.motion-bento__cell{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:220px;border:1px solid rgba(237,239,224,.16);background:rgba(237,239,224,.025);overflow:hidden;text-decoration:none;color:var(--milk);transition:background .5s var(--ease),border-color .5s var(--ease);}
+.motion-bento__cell::before{content:"";position:absolute;top:0;left:0;height:2px;width:100%;background:var(--sun);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);z-index:2;}
+.motion-bento__cell:hover::before{transform:scaleX(1);}
+.motion-bento__cell:hover{background:rgba(206,168,96,.06);border-color:rgba(206,168,96,.3);}
+.motion-bento__cell.span-sm{grid-column:span 2;}
+.motion-bento__cell.span-md{grid-column:span 3;}
+.motion-bento__cell.span-lg{grid-column:span 4;min-height:300px;}
+.motion-bento__media{position:absolute;inset:0;z-index:0;}
+.motion-bento__media img{width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.6);transition:transform .8s var(--ease);}
+.motion-bento__cell.has-media:hover .motion-bento__media img{transform:scale(1.04);}
+.motion-bento__cell.has-media::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(8,10,6,.86),rgba(8,10,6,.15) 68%);}
+.motion-bento__tx{position:relative;z-index:2;padding:22px 22px 24px;}
+.motion-bento__k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);display:block;}
+.motion-bento__h{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.4vw,28px);font-weight:500;margin:6px 0 8px;line-height:1.1;}
+.motion-bento__p{color:var(--body);font-size:clamp(12.5px,.95vw,14px);line-height:1.6;max-width:40ch;}
+.motion-bento__go{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sun);display:inline-block;margin-top:14px;}
+.motion-bento__cell.is-book{background:rgba(206,168,96,.05);border-color:rgba(206,168,96,.28);justify-content:center;}
+@media(max-width:760px){
+  .motion-bento{grid-template-columns:1fr;}
+  .motion-bento__cell,.motion-bento__cell.span-sm,.motion-bento__cell.span-md,.motion-bento__cell.span-lg{grid-column:1/-1;}
+}
+
+/* Split sticky (M5, P4) — copy column pins while the content column scrolls.
+   Light, not a second theater. NEVER inside .rv (transform kills sticky). */
+.split-sticky{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:start;}
+.split-sticky__copy{position:sticky;top:var(--stack-top);align-self:start;}
+.split-sticky__body{margin-top:20px;}
+.split-sticky__content{display:flex;flex-direction:column;gap:clamp(20px,3vw,32px);}
+@media(max-width:820px){
+  .split-sticky{grid-template-columns:1fr;gap:26px;}
+  .split-sticky__copy{position:relative;top:auto;}
+}
+
+/* Page-enter (P7) — each room's content settles in on navigation while the nav
+   and footer chrome hold. A restrained stand-in for full View Transitions, which
+   we deliberately did NOT enable: native VT doesn't fire on Next SPA <Link> nav,
+   and the experimental config flag isn't worth the risk for a signature-tier
+   nicety. OPACITY ONLY — a transform on <main> would break the sticky stack
+   inside it. The reduced-motion killswitch removes it entirely. */
+@keyframes room-in{from{opacity:0;}to{opacity:1;}}
+main{animation:room-in .35s var(--ease) both;}
