@@ -232,15 +232,15 @@ export default function FieldNotesPage() {
             <h3 className="mid" id="cx-h">
               Field Notes is where relationships begin.
               <br />
-              Cosign is where they go.
+              The work is where they go.
             </h3>
             <p className="muted">
-              Built from the community up. Bridged outward through Cosign — our recognition practice for the
-              organizations doing the deeper work.
+              Built from the community up. The people documented here become the sessions, the
+              collaborations, and the walls the work ends up on.
             </p>
             <div className="crosslink">
-              <Link href="/cosign/" className="btn ghost">
-                About Cosign ›
+              <Link href="/work/" className="btn ghost">
+                The portfolio ›
               </Link>
             </div>
           </Reveal>

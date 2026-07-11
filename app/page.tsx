@@ -9,7 +9,7 @@ import { BookMeButton } from "@/components/BookingModal";
 export const metadata: Metadata = {
   title: "SolHous — Editorial Photography & Creative House | Greensboro, NC",
   description:
-    "SolHous is a creative house in Greensboro, North Carolina, built around Studio Hous editorial portrait photography — plus the human-curated Anti-Feed, the Direction Market, Field Notes, Spaces, Cosign, and HousScapes. Sessions from $135.",
+    "SolHous is a creative house in Greensboro, North Carolina, built around Studio Hous editorial portrait photography — plus the Direction Market, Field Notes, Spaces, Hous Sites, and HousScapes. Sessions from $135.",
   alternates: { canonical: "https://solhous.com/" },
   openGraph: {
     title: "SolHous — A Creative House, Greensboro NC",
@@ -94,14 +94,6 @@ const rooms: {
     p: "The frames that earned their place. A working sample of recent editorial sessions.",
   },
   {
-    href: "/anti-feed/",
-    img: "/media/portfolio/portraits/portrait-31.jpg",
-    alt: "Young man with locs and a fur-trim collar studying his reflection in a green-framed shop window.",
-    k: "The Anti-Feed",
-    h: "Curation, not ranking",
-    p: "Work that earned its place — selected by a person, published with the why.",
-  },
-  {
     href: "/direction-market/",
     img: "/media/studio/studio-06.jpg",
     alt: "A flat-lay of a Greensboro shoot plan: mood board, lighting diagram, shot list, and a Polaroid.",
@@ -149,14 +141,6 @@ const rooms: {
     h: "Custom sound",
     p: "Send the brief, get a track built around your content — not pulled from a library. Custom sound by SolHous Records.",
   },
-  {
-    href: "/cosign/",
-    img: "/media/studio/studio-01.jpg",
-    alt: "A director walking a team through a pinned shot list beside a print wall.",
-    k: "Cosign",
-    h: "The bridge layer",
-    p: "Recognition and production for the organizations already doing the work. Reciprocity, never extraction.",
-  },
 ];
 
 /** The founding room keeps its service schema so the homepage's equity still ranks for photography intent. */
@@ -197,7 +181,6 @@ const jsonLd = {
   sameAs: ["https://www.instagram.com/thestudio.hous/"],
   brand: [
     { "@type": "Brand", name: "Studio Hous" },
-    { "@type": "Brand", name: "The Anti-Feed" },
     { "@type": "Brand", name: "The Direction Market" },
     { "@type": "Brand", name: "SolHous Spaces" },
     { "@type": "Brand", name: "Hous Sites" },

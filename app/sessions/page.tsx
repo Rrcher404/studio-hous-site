@@ -8,7 +8,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Sessions & Pricing — Studio Hous | Greensboro NC",
   description:
-    "Studio Hous sessions start at $135. Portraits, graduation, prom, real estate, and commercial — every session includes creative direction, premium editing, and a curated gallery.",
+    "Studio Hous sessions start at $135. Portraits, graduation, prom, weddings, corporate and private events, real estate, and commercial — every session includes creative direction, premium editing, and a curated gallery.",
   alternates: { canonical: "https://solhous.com/sessions/" },
   openGraph: {
     title: "Sessions & Pricing — Studio Hous",
@@ -178,9 +178,49 @@ export default function SessionsPage() {
           </Reveal>
         </section>
 
+        <section aria-labelledby="events-h">
+          <Reveal className="block tight" id="events">
+            <p className="roll">Roll 003 · events</p>
+            <h2 className="big" id="events-h">
+              Rooms full of moments,
+              <br />
+              none of them <em>posed.</em>
+            </h2>
+            <p className="muted">
+              Weddings, corporate events, and the celebrations in between. The same editorial eye,
+              working a room instead of a set: the planned frames on the run of show, and the ones
+              nobody planned that end up mattering more.
+            </p>
+            <div className="pro-row" style={{ marginTop: 34 }}>
+              <div className="pro">
+                <h3>Weddings</h3>
+                <p>
+                  Coverage built around your timeline, not a shot-list template. Direction where it
+                  helps, invisibility where it counts, and a gallery curated like an editorial.
+                </p>
+                <p className="meta">Quoted per wedding · dates hold with a deposit</p>
+              </div>
+              <div className="pro">
+                <h3>Corporate &amp; Private Events</h3>
+                <p>
+                  Conferences, galas, launches, retreats, and the parties worth remembering.
+                  Keynotes, candids, details, and the room itself — delivered ready for your
+                  channels.
+                </p>
+                <p className="meta">Quoted to your run of show · let&rsquo;s talk</p>
+              </div>
+            </div>
+            <p className="held">
+              Every event is scoped on a call first: hours of coverage, the moments that cannot be
+              missed, and delivery timeline. You&rsquo;ll have the whole number before you hold the
+              date.
+            </p>
+          </Reveal>
+        </section>
+
         <section aria-labelledby="hold-h">
           <Reveal className="block" id="hold">
-            <p className="roll">Roll 003 · how holding a date works</p>
+            <p className="roll">Roll 004 · how holding a date works</p>
             <h2 className="big" id="hold-h">
               The whole price,
               <br />
@@ -222,7 +262,7 @@ export default function SessionsPage() {
 
         <section aria-labelledby="who-h">
           <Reveal className="block" id="who">
-            <p className="roll">Roll 004 · who we work with</p>
+            <p className="roll">Roll 005 · who we work with</p>
             <h2 className="big" id="who-h">
               For the moment that&rsquo;s
               <br />

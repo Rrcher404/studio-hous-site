@@ -235,14 +235,10 @@ export default function DirectionMarketPage() {
               The eye behind it is already public.
             </h3>
             <p className="muted">
-              See the standard the packages are held to — the curated selections on the Anti-Feed and
-              the working portfolio. And every package here came out of a Studio Hous session. That door
-              is open too.
+              See the standard the packages are held to — the working portfolio. And every package
+              here came out of a Studio Hous session. That door is open too.
             </p>
             <div className="crosslink" style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-              <Link href="/anti-feed/" className="btn ghost">
-                The Anti-Feed ›
-              </Link>
               <Link href="/work/" className="btn ghost">
                 The portfolio ›
               </Link>

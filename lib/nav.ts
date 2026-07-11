@@ -16,13 +16,14 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "The Hous",
     mobileLabel: "The Hous",
     links: [
-      { href: "/anti-feed/", label: "Anti-Feed" },
+      // Archived 2026-07-11 (pages stay reachable by URL, just unlisted):
+      // { href: "/anti-feed/", label: "Anti-Feed" },
+      // { href: "/cosign/", label: "Cosign" },
       { href: "/direction-market/", label: "Direction Market" },
       { href: "/records/", label: "Records" },
       { href: "/housscapes/", label: "HousScapes" },
       { href: "/spaces/", label: "Spaces" },
       { href: "/hous-sites/", label: "Hous Sites" },
-      { href: "/cosign/", label: "Cosign" },
     ],
   },
 ];
