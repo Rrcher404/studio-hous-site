@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Hous Sites — Editorial Websites for Small Businesses | SolHous",
   description:
-    "Hous Sites builds editorial websites for small businesses and brands. Your business, art-directed. A $500 Blueprint, builds at $3,500 and $6,000, and every site ships with the Hous Panel and 90 days of Hous Care.",
+    "Hous Sites builds editorial websites for small businesses and brands. Your business, art-directed. A $500 Blueprint, builds at $2,000 and $3,500, the Hous Panel editing dashboard as a $500 add-on, and 90 days of Hous Care with every build.",
   alternates: { canonical: "https://solhous.com/hous-sites/" },
   openGraph: {
     title: "Hous Sites — SolHous",
@@ -49,18 +49,26 @@ const jsonLd = {
     {
       "@type": "Offer",
       name: "Hous Editorial",
-      price: "3500",
+      price: "2000",
       priceCurrency: "USD",
       description:
-        "Up to 5 pages, editorial-grade design, Hous Panel, contact form and SEO, launch plus 90 days of Hous Care included.",
+        "Up to 5 pages, editorial-grade design, contact form and SEO, launch plus 90 days of Hous Care included.",
     },
     {
       "@type": "Offer",
       name: "Hous Flagship",
-      price: "6000",
+      price: "3500",
       priceCurrency: "USD",
       description:
         "Up to 10 pages, CMS collections, booking or commerce-lite, art-directed photo treatment with Studio Hous, launch plus 90 days of Hous Care+ included.",
+    },
+    {
+      "@type": "Offer",
+      name: "Hous Panel",
+      price: "500",
+      priceCurrency: "USD",
+      description:
+        "Add-on to either build: a white-label dashboard for editing words, images, hours, and announcements inside design-protected limits.",
     },
   ],
 };
@@ -114,8 +122,8 @@ export default function HousSitesPage() {
                 <span className="k">Design stays locked</span>
                 <h3>Taste is protected</h3>
                 <p>
-                  You edit your own words, images, and hours through the Hous Panel. The type, spacing,
-                  and layout stay locked, so the site never drifts off-grade.
+                  Add the Hous Panel and edit your own words, images, and hours yourself. Either way,
+                  the type, spacing, and layout stay locked, so the site never drifts off-grade.
                 </p>
               </div>
               <div className="p">
@@ -139,8 +147,7 @@ export default function HousSitesPage() {
               </span>
             </div>
             <p className="includes">
-              Every build includes · Hous Panel · launch · 90 days of care · a fixed quote before work
-              starts
+              Every build includes · launch · 90 days of care · a fixed quote before work starts
             </p>
             <div className="cats">
               <div className="cat">
@@ -167,9 +174,9 @@ export default function HousSitesPage() {
                 <div className="tier">
                   <div className="n">
                     The build
-                    <small>up to 5 pages · Hous Panel · contact form + SEO</small>
+                    <small>up to 5 pages · contact form + SEO</small>
                   </div>
-                  <div className="pr">$3,500</div>
+                  <div className="pr">$2,000</div>
                 </div>
                 <div className="tier">
                   <div className="n">
@@ -177,6 +184,13 @@ export default function HousSitesPage() {
                     <small>go-live · 90 days of Hous Care</small>
                   </div>
                   <div className="pr">included</div>
+                </div>
+                <div className="tier">
+                  <div className="n">
+                    Hous Panel
+                    <small>edit it yourself · optional add-on</small>
+                  </div>
+                  <div className="pr">+ $500</div>
                 </div>
               </div>
               <div className="cat">
@@ -191,7 +205,7 @@ export default function HousSitesPage() {
                     The build
                     <small>up to 10 pages · CMS collections · booking or commerce-lite</small>
                   </div>
-                  <div className="pr">$6,000</div>
+                  <div className="pr">$3,500</div>
                 </div>
                 <div className="tier">
                   <div className="n">
@@ -206,6 +220,13 @@ export default function HousSitesPage() {
                     <small>go-live · 90 days of Hous Care+</small>
                   </div>
                   <div className="pr">included</div>
+                </div>
+                <div className="tier">
+                  <div className="n">
+                    Hous Panel
+                    <small>edit it yourself · optional add-on</small>
+                  </div>
+                  <div className="pr">+ $500</div>
                 </div>
               </div>
             </div>
@@ -225,10 +246,11 @@ export default function HousSitesPage() {
               We hold the <em>taste.</em>
             </h2>
             <p className="muted">
-              The Hous Panel is a white-label dashboard that ships with every build. Your hours, your
-              announcements, your words and images, editable by you in the browser at any hour. The
-              layout, the type, the spacing, the color: locked. The client controls content; the
-              studio controls taste.
+              The Hous Panel is a white-label dashboard you can add to either build for $500. Your
+              hours, your announcements, your words and images, editable by you in the browser at any
+              hour. The layout, the type, the spacing, the color: locked. The client controls content;
+              the studio controls taste. Skip it, and we make your changes for you inside your care
+              plan&rsquo;s included time.
             </p>
             <div className="princ two" style={{ marginTop: 42 }}>
               <div className="p">
@@ -325,8 +347,8 @@ export default function HousSitesPage() {
               <div className="pro">
                 <h3>Hous Care</h3>
                 <p>
-                  Hosting, the Hous Panel, backups, monitoring, 30 minutes of assistance each month,
-                  and a quarterly editorial check-in on the words.
+                  Hosting, backups, monitoring, 30 minutes of assistance each month, a quarterly
+                  editorial check-in on the words, and the Hous Panel where you&rsquo;ve added it.
                 </p>
                 <p className="meta">$150/mo · 90 days included with every build</p>
               </div>
@@ -336,7 +358,7 @@ export default function HousSitesPage() {
                   Everything in Hous Care, plus 2 hours of design work each month, a seasonal refresh
                   each quarter, a traffic snapshot, and 48-hour priority.
                 </p>
-                <p className="meta">$325/mo · 90 days included with Flagship</p>
+                <p className="meta">$275/mo · 90 days included with Flagship</p>
               </div>
             </div>
             <p className="held">

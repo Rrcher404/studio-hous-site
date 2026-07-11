@@ -131,7 +131,7 @@ const rooms: {
     alt: "A flat-lay of an editorial shoot plan in afternoon light: mood board, lighting diagram, shot list, Polaroid, and fabric swatches.",
     k: "Hous Sites",
     h: "Your business, art-directed",
-    p: "Editorial websites for small businesses and brands, built like editorials, not templates. Blueprint $500, builds from $3,500.",
+    p: "Editorial websites for small businesses and brands, built like editorials, not templates. Blueprint $500, builds from $2,000.",
   },
   {
     href: "/records/",
