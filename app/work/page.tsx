@@ -5,6 +5,8 @@ import { Gallery } from "@/components/Gallery";
 import { Footer } from "@/components/Footer";
 import { BookMeButton } from "@/components/BookingModal";
 import Link from "next/link";
+import { getContent } from "@/lib/content";
+import { renderHeadline, clamp } from "@/components/editable";
 
 export const metadata: Metadata = {
   title: "Work — Editorial Portrait Photography | Studio Hous, Greensboro NC",
@@ -50,20 +52,15 @@ const gallery = [
   caption: item.caption,
 }));
 
-export default function WorkPage() {
+export default async function WorkPage() {
+  const hero = await getContent<{ eyebrow: string; headline: string; sub: string }>("work.hero");
   return (
     <>
       <PageHero
         bgImage="/media/portfolio/portraits/portrait-36.jpg"
-        eyebrow="Studio Hous · Selected Work · Greensboro NC"
-        heading={
-          <>
-            Every image earns
-            <br />
-            its <em>place.</em>
-          </>
-        }
-        sub="Editorial direction, premium editing, a curated gallery. The same eye on every session — a graduation portrait or a brand shoot."
+        eyebrow={clamp(hero.eyebrow, 48)}
+        heading={renderHeadline(clamp(hero.headline, 60))}
+        sub={clamp(hero.sub, 200)}
       />
 
       <main id="main">

@@ -3,6 +3,11 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { Footer } from "@/components/Footer";
+import { getContent } from "@/lib/content";
+import { renderHeadline, clamp } from "@/components/editable";
+
+type Tier = { n: string; small: string; pr: string; pop?: string };
+type BuildCard = { name: string; season: string; blurb: string; tiers: Tier[]; note?: string };
 
 export const metadata: Metadata = {
   title: "Hous Sites — Editorial Websites for Small Businesses | SolHous",
@@ -73,7 +78,13 @@ const jsonLd = {
   ],
 };
 
-export default function HousSitesPage() {
+export default async function HousSitesPage() {
+  const [position, builds, panel, care] = await Promise.all([
+    getContent<{ headline: string; body: string }>("hous-sites.position"),
+    getContent<{ cards: BuildCard[]; held: string }>("hous-sites.builds"),
+    getContent<{ headline: string; body: string; promise: string; promiseBy: string }>("hous-sites.panel"),
+    getContent<{ cards: { h: string; p: string; meta: string }[]; held: string }>("hous-sites.care"),
+  ]);
   return (
     <>
       <script
@@ -100,15 +111,9 @@ export default function HousSitesPage() {
           <Reveal className="block" id="position">
             <p className="roll">Roll 001 · the position</p>
             <h2 className="big" id="pos-h">
-              Built like editorials,
-              <br />
-              not <em>templates.</em>
+              {renderHeadline(clamp(position.headline, 64))}
             </h2>
-            <p className="muted">
-              Most small-business sites come off a template shelf and look like it. Hous Sites treats
-              your website like an editorial: direction first, then design, then a build you can live
-              in without a developer on retainer.
-            </p>
+            <p className="muted">{clamp(position.body, 300)}</p>
             <div className="princ" style={{ marginTop: 42 }}>
               <div className="p">
                 <span className="k">Direction first</span>
@@ -150,90 +155,26 @@ export default function HousSitesPage() {
               Every build includes · launch · 90 days of care · a fixed quote before work starts
             </p>
             <div className="cats">
-              <div className="cat">
-                <h3>Hous Blueprint</h3>
-                <p className="season">Paid discovery · every build starts here</p>
-                <p className="blurb">
-                  A discovery sprint that ends in a plan you own, whether or not we build it.
-                </p>
-                <div className="tier">
-                  <div className="n">
-                    The sprint
-                    <small>60-min call · editorial direction memo · sitemap · fixed quote</small>
-                  </div>
-                  <div className="pr">$500</div>
+              {builds.cards.map((card) => (
+                <div className="cat" key={card.name}>
+                  <h3>{clamp(card.name, 28)}</h3>
+                  <p className="season">{clamp(card.season, 48)}</p>
+                  <p className="blurb">{clamp(card.blurb, 160)}</p>
+                  {card.tiers.map((tier) => (
+                    <div className="tier" key={tier.n}>
+                      <div className="n">
+                        {clamp(tier.n, 28)}
+                        {tier.pop && <span className="pop">{tier.pop}</span>}
+                        <small>{clamp(tier.small, 80)}</small>
+                      </div>
+                      <div className="pr">{clamp(tier.pr, 12)}</div>
+                    </div>
+                  ))}
+                  {card.note && <p className="note">{card.note}</p>}
                 </div>
-                <p className="note">100% credited toward your build within 30 days.</p>
-              </div>
-              <div className="cat">
-                <h3>Hous Editorial</h3>
-                <p className="season">Up to 5 pages · about 3 weeks</p>
-                <p className="blurb">
-                  Editorial-grade design for the business that needs one site done right.
-                </p>
-                <div className="tier">
-                  <div className="n">
-                    The build
-                    <small>up to 5 pages · contact form + SEO</small>
-                  </div>
-                  <div className="pr">$2,000</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Launch + care
-                    <small>go-live · 90 days of Hous Care</small>
-                  </div>
-                  <div className="pr">included</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Hous Panel
-                    <small>edit it yourself · optional add-on</small>
-                  </div>
-                  <div className="pr">+ $500</div>
-                </div>
-              </div>
-              <div className="cat">
-                <h3>Hous Flagship</h3>
-                <p className="season">Up to 10 pages · CMS · commerce-lite</p>
-                <p className="blurb">
-                  The larger build: collections, booking or commerce-lite, and imagery treated with the
-                  studio&rsquo;s eye.
-                </p>
-                <div className="tier">
-                  <div className="n">
-                    The build
-                    <small>up to 10 pages · CMS collections · booking or commerce-lite</small>
-                  </div>
-                  <div className="pr">$3,500</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Photo treatment
-                    <small>art-directed with Studio Hous</small>
-                  </div>
-                  <div className="pr">included</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Launch + care
-                    <small>go-live · 90 days of Hous Care+</small>
-                  </div>
-                  <div className="pr">included</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Hous Panel
-                    <small>edit it yourself · optional add-on</small>
-                  </div>
-                  <div className="pr">+ $500</div>
-                </div>
-              </div>
+              ))}
             </div>
-            <p className="held">
-              The Blueprint ends in a fixed quote. The number you sign is the number you pay, and the
-              $500 comes off it when you build within 30 days.
-            </p>
+            <p className="held">{clamp(builds.held, 280)}</p>
           </Reveal>
         </section>
 
@@ -241,17 +182,9 @@ export default function HousSitesPage() {
           <Reveal className="block" id="panel">
             <p className="roll">Roll 003 · the hous panel</p>
             <h2 className="big" id="panel-h">
-              You hold the words.
-              <br />
-              We hold the <em>taste.</em>
+              {renderHeadline(clamp(panel.headline, 64))}
             </h2>
-            <p className="muted">
-              The Hous Panel is a white-label dashboard you can add to either build for $500. Your
-              hours, your announcements, your words and images, editable by you in the browser at any
-              hour. The layout, the type, the spacing, the color: locked. The client controls content;
-              the studio controls taste. Skip it, and we make your changes for you inside your care
-              plan&rsquo;s included time.
-            </p>
+            <p className="muted">{clamp(panel.body, 400)}</p>
             <div className="princ two" style={{ marginTop: 42 }}>
               <div className="p">
                 <span className="k">Yours to edit</span>
@@ -271,8 +204,8 @@ export default function HousSitesPage() {
               </div>
             </div>
             <div className="firstwords" style={{ marginTop: 42 }}>
-              <p>You can&rsquo;t break it. We made sure.</p>
-              <p className="by">— the Hous Panel promise</p>
+              <p>{clamp(panel.promise, 80)}</p>
+              <p className="by">— {clamp(panel.promiseBy, 48)}</p>
             </div>
           </Reveal>
         </section>
@@ -344,27 +277,15 @@ export default function HousSitesPage() {
               continues month to month after that.
             </p>
             <div className="pro-row" style={{ marginTop: 34 }}>
-              <div className="pro">
-                <h3>Hous Care</h3>
-                <p>
-                  Hosting, backups, monitoring, 30 minutes of assistance each month, a quarterly
-                  editorial check-in on the words, and the Hous Panel where you&rsquo;ve added it.
-                </p>
-                <p className="meta">$150/mo · 90 days included with every build</p>
-              </div>
-              <div className="pro">
-                <h3>Hous Care+</h3>
-                <p>
-                  Everything in Hous Care, plus 2 hours of design work each month, a seasonal refresh
-                  each quarter, a traffic snapshot, and 48-hour priority.
-                </p>
-                <p className="meta">$275/mo · 90 days included with Flagship</p>
-              </div>
+              {care.cards.map((card) => (
+                <div className="pro" key={card.h}>
+                  <h3>{clamp(card.h, 28)}</h3>
+                  <p>{clamp(card.p, 240)}</p>
+                  <p className="meta">{clamp(card.meta, 64)}</p>
+                </div>
+              ))}
             </div>
-            <p className="held">
-              After the included 90 days, care continues month to month on the card on file. Cancel
-              any time with 30 days&rsquo; notice, and your site and content export with you.
-            </p>
+            <p className="held">{clamp(care.held, 280)}</p>
           </Reveal>
         </section>
 

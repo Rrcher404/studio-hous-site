@@ -4,6 +4,8 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { Footer } from "@/components/Footer";
 import { FieldNotesForm } from "@/components/FieldNotesForm";
+import { getContent } from "@/lib/content";
+import { renderHeadline, clamp } from "@/components/editable";
 
 export const metadata: Metadata = {
   title: "Field Notes — Real People, Real Days, Real Work | Studio Hous",
@@ -21,19 +23,16 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-export default function FieldNotesPage() {
+export default async function FieldNotesPage() {
+  const hero = await getContent<{ headline: string; sub: string; intro: string }>("field-notes.hero");
   return (
     <>
       <PageHero
         tall
         bgImage="/media/studio/studio-04.jpg"
         eyebrow="Studio Hous · The Editorial Practice"
-        heading={
-          <>
-            Field <em>Notes.</em>
-          </>
-        }
-        sub="Some stories take a day. Some stories take a season. All of them are worth the time it takes to get them right."
+        heading={renderHeadline(clamp(hero.headline, 60))}
+        sub={clamp(hero.sub, 240)}
       />
 
       <main id="main">
@@ -45,12 +44,7 @@ export default function FieldNotesPage() {
               <br />
               real <em>work.</em>
             </h2>
-            <p className="muted">
-              Field Notes is a biweekly, long-form, day-in-the-life editorial series documenting working
-              creatives — photographers, designers, founders, students, audio engineers, muralists, art
-              teachers — across the Greensboro creative middle class and beyond. Numbered issues. A permanent
-              archive. Published by Studio Hous, under SolHous.
-            </p>
+            <p className="muted">{clamp(hero.intro, 400)}</p>
             <div className="firstwords" style={{ marginTop: 40 }}>
               <p>We&rsquo;re early. We&rsquo;re choosy. We&rsquo;re building the founding archive of a publication that intends to last.</p>
               <p className="by">— honest by design</p>

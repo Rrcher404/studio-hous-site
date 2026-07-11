@@ -68,82 +68,57 @@ const workTeaser = [
   },
 ];
 
-const rooms: {
-  href: string;
-  img: string;
-  alt: string;
-  k: string;
-  h: string;
-  p: string;
-  imgPos?: string;
-}[] = [
+/**
+ * Room-card chrome stays code-owned (hrefs, default imagery, alt text,
+ * framing); the k/h/p copy — and an optional uploaded image — render from the
+ * `home.rooms` content section, seed-identical to what was hardcoded here.
+ */
+const roomChrome: { href: string; img: string; alt: string; imgPos?: string }[] = [
   {
     href: "/sessions/",
     img: "/media/portfolio/portraits/portrait-38.jpg",
     imgPos: "center 20%",
     alt: "Three friends at a warm-lit hallway threshold, one in a black tuxedo flanked by two women in forest green and ivory, dressed for a formal night out.",
-    k: "Studio Hous",
-    h: "Sessions & pricing",
-    p: "The editorial photography studio the Hous was built around. Portraits, grad, prom, and commercial, from $135.",
   },
   {
     href: "/work/",
     img: "/media/portfolio/portraits/portrait-39.jpg",
     imgPos: "center 20%",
     alt: "Two best friends in matching mustard bomber jackets sharing tea at a chrome diner table against a crushed forest-green velvet backdrop.",
-    k: "Studio Hous",
-    h: "The portfolio",
-    p: "The frames that earned their place. A working sample of recent editorial sessions.",
   },
   {
     href: "/direction-market/",
     img: "/media/studio/studio-06.jpg",
     alt: "A flat-lay of a Greensboro shoot plan: mood board, lighting diagram, shot list, and a Polaroid.",
-    k: "The Direction Market",
-    h: "Direction you can build on",
-    p: "Complete creative direction packages — mood board, shot list, lighting, grade, styling. Three proven packages, open now from $29.",
   },
   {
     href: "/field-notes/",
     img: "/media/studio/studio-04.jpg",
     alt: "An editor at a desk holding a contact sheet beside a culling monitor and framed poster.",
-    k: "Field Notes",
-    h: "The editorial practice",
-    p: "A real day in a working creative's life, documented twice a month. Real people, real days, real work.",
   },
   {
     href: "/spaces/",
     img: "/media/studio/studio-02.jpg",
     alt: "Wide interior of the studio: cyc backdrop, softbox, and a gallery print wall.",
-    k: "SolHous Spaces",
-    h: "Property & brand",
-    p: "The room and the people in it, shot with the same eye. Listings, storefronts, and headshots across the Triad.",
   },
   {
     href: "/hous-sites/",
     img: "/media/studio/studio-07.jpg",
     alt: "A flat-lay of an editorial shoot plan in afternoon light: mood board, lighting diagram, shot list, Polaroid, and fabric swatches.",
-    k: "Hous Sites",
-    h: "Your business, art-directed",
-    p: "Editorial websites for small businesses and brands, built like editorials, not templates. Blueprint $500, builds from $2,000.",
   },
   {
     href: "/records/",
     img: "/media/records/echoes-of-tomorrow.jpg",
     alt: "Echoes of Tomorrow EP cover art: a stairway rising toward a low sun over water.",
-    k: "SolHous Records",
-    h: "The sound of the Hous",
-    p: "Echoes of Tomorrow — the debut EP — is out now. Play it here, or anywhere you stream.",
   },
   {
     href: "/housscapes/",
     img: "/media/studio/studio-05.jpg",
     alt: "A sound crew adjusting a stage light against sunset.",
-    k: "HousScapes",
-    h: "Custom sound",
-    p: "Send the brief, get a track built around your content — not pulled from a library. Custom sound by SolHous Records.",
   },
 ];
+
+type RoomCard = { href?: string; k: string; h: string; p: string; img?: string };
 
 /** The founding room keeps its service schema so the homepage's equity still ranks for photography intent. */
 const jsonLdStudio = {
@@ -191,7 +166,12 @@ const jsonLd = {
 };
 
 export default async function HomePage() {
-  const hero = await getContent<{ headline: string; sub: string }>("home.hero");
+  const [hero, roomsContent, firstwords] = await Promise.all([
+    getContent<{ headline: string; sub: string }>("home.hero"),
+    getContent<{ cards: RoomCard[] }>("home.rooms"),
+    getContent<{ quote: string; by: string }>("home.firstwords"),
+  ]);
+  const rooms = roomChrome.map((chrome, i) => ({ ...chrome, ...(roomsContent.cards[i] ?? {}), href: chrome.href }));
   return (
     <>
       <script
@@ -250,9 +230,9 @@ export default async function HomePage() {
                     />
                   </div>
                   <div className="tx">
-                    <span className="k">{card.k}</span>
-                    <h3>{card.h}</h3>
-                    <p>{card.p}</p>
+                    <span className="k">{clamp(card.k ?? "", 24)}</span>
+                    <h3>{clamp(card.h ?? "", 40)}</h3>
+                    <p>{clamp(card.p ?? "", 160)}</p>
                     <span className="go">Enter ›</span>
                   </div>
                 </Link>
@@ -363,12 +343,8 @@ export default async function HomePage() {
               First words
             </h2>
             <div className="firstwords">
-              <p>
-                The first galleries are being made right now. When the words come, they&rsquo;ll arrive
-                unedited, in the client&rsquo;s own voice — or they won&rsquo;t arrive at all. We&rsquo;d
-                rather show you an honest blank than a borrowed quote.
-              </p>
-              <p className="by">— honest by design</p>
+              <p>{clamp(firstwords.quote, 240)}</p>
+              <p className="by">— {clamp(firstwords.by, 60)}</p>
             </div>
           </Reveal>
         </section>

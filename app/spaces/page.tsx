@@ -2,6 +2,17 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { Footer } from "@/components/Footer";
+import { getContent } from "@/lib/content";
+import { renderHeadline, clamp } from "@/components/editable";
+
+type Tier = { n: string; small: string; pr: string; pop?: string };
+type SpacesCat = { name: string; season: string; blurb: string; tiers: Tier[]; note?: string };
+type SpacesPricing = {
+  includes: string;
+  cats: SpacesCat[];
+  development: { h: string; p: string; meta: string };
+  held: string;
+};
 
 export const metadata: Metadata = {
   title: "SolHous Spaces — Premium Real Estate & Storefront Photography | Greensboro & the Triad",
@@ -18,21 +29,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SpacesPage() {
+export default async function SpacesPage() {
+  const [hero, pricing] = await Promise.all([
+    getContent<{ headline: string; sub: string }>("spaces.hero"),
+    getContent<SpacesPricing>("spaces.pricing"),
+  ]);
   return (
     <>
       <PageHero
         tall
         bgImage="/media/studio/studio-02.jpg"
         eyebrow="SOLHOUS SPACES · GREENSBORO & THE TRIAD"
-        heading={
-          <>
-            The studio for agents and owners
-            <br />
-            who refuse to look like <em>everyone else.</em>
-          </>
-        }
-        sub="We photograph the room, and the people who live and work in it, with the same eye."
+        heading={renderHeadline(clamp(hero.headline, 80))}
+        sub={clamp(hero.sub, 200)}
         extra={
           <p className="cap">
             Shot on Sony A7III · Greensboro &amp; the Triad · Charlotte &amp; Raleigh-Durham by appointment
@@ -67,114 +76,35 @@ export default function SpacesPage() {
                 Four lanes. One eye.
               </span>
             </div>
-            <p className="includes">
-              Storefronts from $250 · Listings from $175 · Agents from $225 · Development quoted to scope
-            </p>
+            <p className="includes">{clamp(pricing.includes, 120)}</p>
             <div className="cats">
-              <div className="cat">
-                <h3>The Storefront</h3>
-                <p className="season">From $250 · restaurants · cafes · shops · salons</p>
-                <p className="blurb">
-                  The room your customers walk into, photographed the way it actually feels at the good hour.
-                </p>
-                <div className="tier">
-                  <div className="n">
-                    Mini
-                    <small>1 hr · 15–20 images · interior + details</small>
-                  </div>
-                  <div className="pr">$250</div>
+              {pricing.cats.map((cat) => (
+                <div className="cat" key={cat.name}>
+                  <h3>{clamp(cat.name, 28)}</h3>
+                  <p className="season">{clamp(cat.season, 64)}</p>
+                  <p className="blurb">{clamp(cat.blurb, 160)}</p>
+                  {cat.tiers.map((tier) => (
+                    <div className="tier" key={tier.n}>
+                      <div className="n">
+                        {clamp(tier.n, 28)}
+                        {tier.pop && <span className="pop">{tier.pop}</span>}
+                        <small>{clamp(tier.small, 80)}</small>
+                      </div>
+                      <div className="pr">{clamp(tier.pr, 12)}</div>
+                    </div>
+                  ))}
+                  {cat.note && <p className="note">{cat.note}</p>}
                 </div>
-                <div className="tier">
-                  <div className="n">
-                    Session
-                    <small>2–3 hr · 30–40 images · interior, ambiance, product/food</small>
-                  </div>
-                  <div className="pr">$475</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    + Brand
-                    <small>Half-day · interior + product + owner/team portraits + 3 vertical clips</small>
-                  </div>
-                  <div className="pr">$895</div>
-                </div>
-                <p className="note">I shoot during your slow hours so it never touches service.</p>
-              </div>
-              <div className="cat">
-                <h3>The Listing</h3>
-                <p className="season">From $175 · MLS · print · the scroll</p>
-                <p className="blurb">Your property, read for light before it&rsquo;s read for square footage.</p>
-                <div className="tier">
-                  <div className="n">
-                    Quick
-                    <small>Up to 1,500 sqft · 25–30 photos · next day by noon</small>
-                  </div>
-                  <div className="pr">$175</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Standard <span className="pop">Most booked</span>
-                    <small>1,500–2,500 sqft · 35–45 photos · next day by noon</small>
-                  </div>
-                  <div className="pr">$235</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Showcase
-                    <small>2,500–4,000 sqft · 50–60 photos · 24–48 hrs</small>
-                  </div>
-                  <div className="pr">$315</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Estate
-                    <small>4,000+ sqft · 65+ photos · 48 hrs</small>
-                  </div>
-                  <div className="pr">from $425</div>
-                </div>
-              </div>
-              <div className="cat">
-                <h3>The Agent</h3>
-                <p className="season">From $225 · personal branding</p>
-                <p className="blurb">
-                  You, on your own listing. Personal branding that matches the work, so the face and the
-                  houses finally look like one practice.
-                </p>
-                <div className="tier">
-                  <div className="n">
-                    Headshot Refresh
-                    <small>45 min · 3 looks · all crops</small>
-                  </div>
-                  <div className="pr">$225</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Agent Brand Day, Mini
-                    <small>1.5 hr · 1 location · headshots + 15 stills</small>
-                  </div>
-                  <div className="pr">$475</div>
-                </div>
-                <div className="tier">
-                  <div className="n">
-                    Agent Brand Day, Full
-                    <small>Half-day · 2 looks · 30 stills + 3 clips</small>
-                  </div>
-                  <div className="pr">$950</div>
-                </div>
-              </div>
+              ))}
             </div>
             <div className="pro-row" style={{ gridTemplateColumns: "1fr" }}>
               <div className="pro">
-                <h3>The Development</h3>
-                <p>Commercial spaces and ground-up projects. Scope is the conversation.</p>
-                <p className="meta">Half-days from $475 · let&rsquo;s talk</p>
+                <h3>{pricing.development.h}</h3>
+                <p>{pricing.development.p}</p>
+                <p className="meta">{pricing.development.meta}</p>
               </div>
             </div>
-            <p className="held">
-              Listing add-ons: Twilight exterior $150 · 3D tour $150 · 2D floor plan $59 ($49 with 3D) ·
-              Agent video walkthrough $425 · Virtual staging $40/room · Object removal $20/image. All prices
-              plus NC sales tax.
-            </p>
+            <p className="held">{clamp(pricing.held, 300)}</p>
             <div style={{ marginTop: 34 }}>
               <a className="btn" data-h href="mailto:studio@solhous.com?subject=SolHous%20Spaces%20inquiry">
                 Start the conversation ›

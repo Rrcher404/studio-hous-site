@@ -4,6 +4,8 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { Footer } from "@/components/Footer";
 import { NotifyForm } from "@/components/NotifyForm";
+import { getContent } from "@/lib/content";
+import { clamp } from "@/components/editable";
 
 export const metadata: Metadata = {
   title: "The Direction Market — Creative Direction Packages | SolHous",
@@ -97,7 +99,11 @@ const jsonLd = {
   })),
 };
 
-export default function DirectionMarketPage() {
+export default async function DirectionMarketPage() {
+  const packages = await getContent<{ items: { slug: string; tier: string; name: string; pitch: string }[] }>(
+    "direction-market.packages"
+  );
+  const copyFor = (slug: string) => packages.items.find((p) => p.slug === slug);
   return (
     <>
       <script
@@ -132,16 +138,20 @@ export default function DirectionMarketPage() {
               instead of a blank page.
             </p>
             <div className="uni">
-              {shelf.map((p) =>
-                p.live ? (
+              {shelf.map((p) => {
+                const copy = copyFor(p.slug);
+                const tier = clamp(copy?.tier ?? p.tier, 24);
+                const name = clamp(copy?.name ?? p.name, 32);
+                const pitch = clamp(copy?.pitch ?? p.pitch, 200);
+                return p.live ? (
                   <a key={p.slug} href={p.href} target="_blank" rel="noopener">
                     <div className="im">
                       <img src={p.cover} alt={p.alt} loading="lazy" />
                     </div>
                     <div className="tx">
-                      <span className="k">{p.tier}</span>
-                      <h3>{p.name}</h3>
-                      <p>{p.pitch}</p>
+                      <span className="k">{tier}</span>
+                      <h3>{name}</h3>
+                      <p>{pitch}</p>
                       <span className="go">See the package ›</span>
                     </div>
                   </a>
@@ -151,14 +161,14 @@ export default function DirectionMarketPage() {
                       <img src={p.cover} alt={p.alt} loading="lazy" />
                     </div>
                     <div className="tx">
-                      <span className="k">{p.tier}</span>
-                      <h3>{p.name}</h3>
-                      <p>{p.pitch}</p>
+                      <span className="k">{tier}</span>
+                      <h3>{name}</h3>
+                      <p>{pitch}</p>
                       <span className="go">Shot &amp; proven · opening this week ›</span>
                     </div>
                   </a>
-                )
-              )}
+                );
+              })}
             </div>
           </Reveal>
         </section>
