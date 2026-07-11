@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/cosign/", priority: 0.7 },
     { path: "/housscapes/", priority: 0.7 },
     { path: "/hous-sites/", priority: 0.7 },
+    { path: "/privacy/", priority: 0.3 },
   ];
 
   return pages.map(({ path, priority, changeFrequency }) => ({

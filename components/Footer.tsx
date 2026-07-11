@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { NAV } from "@/lib/nav";
+import { CookieSettingsLink } from "@/components/CookieConsent";
 
 export function Footer({
   line,
@@ -39,6 +40,11 @@ export function Footer({
       </div>
       <p className="legal">
         {legal} <span style={{ color: "var(--sun)" }}>&apos;26 7 2</span>
+      </p>
+      <p className="legal-links">
+        <Link href="/privacy/">Privacy</Link>
+        <span aria-hidden="true"> · </span>
+        <CookieSettingsLink />
       </p>
     </footer>
   );

@@ -6,6 +6,7 @@ import { CursorDot } from "@/components/CursorDot";
 import { GlassDefs } from "@/components/GlassDefs";
 import { Nav } from "@/components/Nav";
 import { BookingModalProvider } from "@/components/BookingModal";
+import { CookieConsent } from "@/components/CookieConsent";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </BookingModalProvider>
         <FilmChrome />
         <CursorDot />
+        <CookieConsent />
       </body>
     </html>
   );
