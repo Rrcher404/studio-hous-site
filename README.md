@@ -39,3 +39,23 @@ This build was reviewed by a full web-team committee (creative director, UX, fro
 ### Content model (no coding)
 - **Add/replace portfolio images:** drop `work-N.jpg` (full) + `work-N-thumb.jpg` (small) into `media/portfolio/`, add a line to the `GALLERY` array.
 - **Testimonials:** the "Roll 005" section is honest placeholder copy. Replace with real client lines when you have them.
+
+## Hous Panel content layer (2026-07)
+
+Marked regions render from Supabase (`hous-panel` project) with a verbatim
+fallback in `content/seed.json`. Editable regions are declared in
+`lib/manifest.ts`; edits happen at panel.solhous.com and go live via
+`POST /api/revalidate/` (tag-based ISR, no rebuild).
+
+- **Rollback:** unset `NEXT_PUBLIC_SUPABASE_URL` and
+  `NEXT_PUBLIC_SUPABASE_ANON_KEY` in Vercel and redeploy — the site pins
+  itself to `content/seed.json`. Every fallback render logs
+  `[content-fallback]` in Vercel logs; if you see those warnings, the site is
+  serving seed copy, not Panel edits.
+- **Manifest changes:** keep `lib/manifest.ts` and the Panel's
+  `lib/manifest/solhous.ts` identical — `node scripts/manifest-parity.mjs`
+  checks. New editable regions need a seed entry, a Supabase row
+  (`scripts/seed-sql.mjs` regenerates the seed migration), and a component
+  binding.
+- **JSON-LD note:** structured-data prices are code-owned; a Panel reprice
+  shows on the page immediately and in JSON-LD on the next deploy.
