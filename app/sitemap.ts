@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/spaces/", priority: 0.7 },
     { path: "/cosign/", priority: 0.7 },
     { path: "/housscapes/", priority: 0.7 },
+    { path: "/hous-sites/", priority: 0.7 },
   ];
 
   return pages.map(({ path, priority, changeFrequency }) => ({

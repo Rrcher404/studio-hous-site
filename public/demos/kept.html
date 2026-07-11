@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KEPT Goods Co. — Small-Batch Goods, Durham NC</title>
+<meta name="description" content="A Hous Sites demonstration shell. All businesses depicted are fictional.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F1ED;
+    --paper-deep:#E7E7E1;
+    --ink:#15171E;
+    --ink-soft:#787B85;
+    --cobalt:#2438E8;
+    --hairline:rgba(21,23,30,.16);
+    --serif:"Instrument Serif",Georgia,serif;
+    --sans:"Instrument Sans",-apple-system,sans-serif;
+    --mono:"Space Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16.5px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--cobalt);color:var(--paper)}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    display:block;
+  }
+
+  /* ---------- announcement bar ---------- */
+  .announce{
+    background:var(--cobalt);
+    color:var(--paper);
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.05em;
+    display:flex;align-items:center;justify-content:center;gap:16px;
+    padding:10px 48px 10px 20px;
+    position:relative;text-align:center;
+  }
+  .announce button{
+    position:absolute;right:12px;top:50%;transform:translateY(-50%);
+    background:none;border:0;color:var(--paper);
+    font-size:15px;cursor:pointer;opacity:.7;padding:4px 8px;line-height:1;
+    font-family:var(--sans);
+  }
+  .announce button:hover{opacity:1}
+  .announce.gone{display:none}
+
+  /* ---------- nav ---------- */
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:24px 0;
+    border-bottom:1px solid var(--ink);
+  }
+  .wordmark{
+    font-family:var(--mono);font-weight:700;
+    font-size:17px;letter-spacing:.3em;
+    text-decoration:none;color:var(--ink);
+  }
+  .wordmark span{color:var(--cobalt)}
+  nav ul{display:flex;gap:30px;list-style:none}
+  nav ul a{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    text-decoration:none;color:var(--ink-soft);transition:color .2s;
+  }
+  nav ul a:hover{color:var(--cobalt)}
+  @media(max-width:680px){nav ul{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:clamp(60px,10vw,128px) 0 0;
+  }
+  .hero-index{
+    display:flex;justify-content:space-between;gap:20px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:clamp(28px,4vw,44px);
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(52px,9.4vw,138px);
+    line-height:.98;
+    letter-spacing:-.02em;
+    text-transform:none;
+  }
+  .hero h1 em{font-style:italic;color:var(--cobalt)}
+  .hero-sub{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(28px,5vw,72px);
+    margin-top:clamp(36px,5vw,60px);
+    padding-top:28px;
+    border-top:1px solid var(--ink);
+    align-items:start;
+  }
+  .hero-sub p{max-width:46ch;font-size:17.5px;line-height:1.7}
+  .hero-sub .meta{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+    color:var(--ink-soft);line-height:2.2;text-align:right;
+  }
+  .hero-sub .meta b{color:var(--ink);font-weight:700}
+  @media(max-width:680px){
+    .hero-sub{grid-template-columns:1fr}
+    .hero-sub .meta{text-align:left}
+  }
+
+  /* ---------- image placeholder blocks (cool ink duotone) ---------- */
+  .ph{
+    position:relative;overflow:hidden;
+    background:
+      radial-gradient(130% 100% at 15% 0%, rgba(36,56,232,.14), transparent 52%),
+      linear-gradient(165deg, #D9DAD3 0%, #B9BBB4 48%, #8E9190 100%);
+  }
+  .ph::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(0deg, rgba(21,23,30,.14), transparent 40%);
+  }
+  .ph .cap{
+    position:absolute;left:14px;bottom:12px;z-index:2;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:rgba(241,241,237,.9);
+  }
+  .ph-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .ph:has(.ph-img)::after{background:linear-gradient(0deg, rgba(21,23,30,.55), transparent 46%)}
+  .ph:has(.ph-img) .cap{color:rgba(241,241,237,.92)}
+  .ph.ink{
+    background:
+      radial-gradient(110% 90% at 85% 10%, rgba(36,56,232,.35), transparent 55%),
+      linear-gradient(200deg, #3A3E4C 0%, #22242E 55%, #15171E 100%);
+  }
+  .ph.pale{
+    background:
+      radial-gradient(120% 100% at 80% 0%, rgba(36,56,232,.10), transparent 50%),
+      linear-gradient(150deg, #E4E4DE 0%, #CFCFC7 55%, #ABADA6 100%);
+  }
+  .ph.pale .cap{color:rgba(21,23,30,.65)}
+
+  .hero-band{margin-top:clamp(44px,6vw,72px)}
+  .hero-band .ph{aspect-ratio:21/8;min-height:260px}
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:clamp(64px,9vw,120px) 0}
+  .sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+    margin-bottom:clamp(32px,5vw,52px);
+    padding-bottom:18px;
+    border-bottom:1px solid var(--ink);
+  }
+  .sec-head h2{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(32px,4.6vw,52px);letter-spacing:-.015em;
+  }
+  .sec-head h2 em{font-style:italic;color:var(--cobalt)}
+
+  /* ---------- lookbook product grid ---------- */
+  .lb-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:clamp(16px,2.4vw,28px) clamp(14px,2vw,24px);
+  }
+  .item{grid-column:span 2}
+  .item.wide{grid-column:span 3}
+  .item .ph{aspect-ratio:4/5}
+  .item.wide .ph{aspect-ratio:3/2}
+  .item-meta{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    padding-top:14px;
+  }
+  .item-meta h3{
+    font-family:var(--serif);font-weight:400;font-size:20px;letter-spacing:-.005em;
+  }
+  .item-meta .price{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .item-no{
+    font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--ink-soft);
+    display:block;margin-bottom:10px;text-transform:uppercase;
+  }
+  .item-line{
+    font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin-top:4px;
+  }
+  @media(max-width:900px){
+    .item,.item.wide{grid-column:span 3}
+    .item.wide .ph{aspect-ratio:4/5}
+  }
+  @media(max-width:600px){
+    .item,.item.wide{grid-column:span 6}
+  }
+  .lb-note{
+    margin-top:clamp(32px,5vw,48px);
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);
+  }
+  .lb-note b{color:var(--cobalt);font-weight:700}
+
+  /* ---------- brand story ---------- */
+  .story{background:var(--ink);color:var(--paper)}
+  .story .eyebrow{color:rgba(241,241,237,.55)}
+  .story-grid{
+    display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+    gap:clamp(36px,6vw,88px);align-items:center;
+  }
+  .story h2{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(30px,4.4vw,50px);
+    line-height:1.12;letter-spacing:-.015em;
+    margin:24px 0 28px;
+  }
+  .story h2 em{font-style:italic;color:#7A88FF}
+  .story p{max-width:50ch;color:rgba(241,241,237,.82);font-size:16.5px}
+  .story p + p{margin-top:18px}
+  .story-stats{
+    margin-top:40px;display:flex;gap:clamp(28px,4vw,56px);flex-wrap:wrap;
+    border-top:1px solid rgba(241,241,237,.22);padding-top:26px;
+  }
+  .stat b{
+    display:block;font-family:var(--serif);font-size:32px;font-weight:400;letter-spacing:-.01em;
+  }
+  .stat span{
+    font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:rgba(241,241,237,.55);
+  }
+  .story .ph{aspect-ratio:4/5}
+  @media(max-width:680px){.story-grid{grid-template-columns:1fr}}
+
+  /* ---------- stockists / visit ---------- */
+  .visit-grid{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(36px,6vw,88px);
+  }
+  .visit address{
+    font-style:normal;font-family:var(--mono);
+    font-size:12.5px;line-height:2.2;letter-spacing:.05em;color:var(--ink-soft);
+  }
+  .visit address b{color:var(--ink);font-weight:700}
+  .visit-quirk{
+    margin-top:22px;font-family:var(--serif);font-style:italic;
+    font-size:19px;color:var(--ink);max-width:36ch;line-height:1.5;
+  }
+  .stockist-list{list-style:none;border-top:1px solid var(--hairline)}
+  .stockist-list li{
+    display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+    padding:16px 0;border-bottom:1px solid var(--hairline);
+  }
+  .stockist-list .name{font-family:var(--serif);font-size:19px}
+  .stockist-list .city{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);white-space:nowrap;
+  }
+  @media(max-width:680px){.visit-grid{grid-template-columns:1fr}}
+
+  /* ---------- newsletter ---------- */
+  .news{border-top:1px solid var(--ink);text-align:left}
+  .news-inner{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(28px,5vw,72px);align-items:center;
+  }
+  .news h2{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(28px,3.8vw,42px);letter-spacing:-.015em;line-height:1.15;
+  }
+  .news h2 em{font-style:italic;color:var(--cobalt)}
+  .news-note{
+    margin-top:14px;font-family:var(--mono);font-size:11.5px;
+    letter-spacing:.06em;color:var(--ink-soft);
+  }
+  .news-form{display:flex;border-bottom:1px solid var(--ink)}
+  .news-form input{
+    flex:1;background:transparent;border:0;outline:0;
+    font-family:var(--mono);font-size:13px;letter-spacing:.04em;
+    color:var(--ink);padding:14px 0;
+  }
+  .news-form input::placeholder{color:var(--ink-soft)}
+  .news-form button{
+    background:none;border:0;cursor:pointer;
+    font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--cobalt);padding:14px 0 14px 18px;
+  }
+  @media(max-width:680px){.news-inner{grid-template-columns:1fr}}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--ink);padding:42px 0 56px}
+  .foot-grid{
+    display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+    color:var(--ink-soft);line-height:2.1;
+  }
+  .demo-line{
+    margin-top:26px;font-family:var(--mono);font-size:10px;
+    letter-spacing:.1em;color:var(--ink-soft);opacity:.75;
+  }
+  .demo-line a{color:var(--cobalt);text-decoration:none}
+
+  /* ---------- scroll reveal ---------- */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none;transition:none}
+  }
+
+  /* ============================================================
+     HOUS PANEL DEMO MODE
+     ============================================================ */
+  .hous-pill{
+    position:fixed;right:22px;bottom:22px;z-index:60;
+    display:flex;align-items:center;gap:9px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+    background:var(--ink);color:var(--paper);
+    border:1px solid var(--ink);border-radius:99px;
+    padding:11px 20px;cursor:pointer;
+    box-shadow:0 6px 24px rgba(21,23,30,.25);
+    transition:background .25s,color .25s,transform .2s;
+  }
+  .hous-pill:hover{transform:translateY(-1px)}
+  body.hous-on .hous-pill{background:var(--cobalt);border-color:var(--cobalt)}
+  .hous-explainer{
+    position:fixed;right:22px;bottom:74px;z-index:60;
+    max-width:300px;
+    background:var(--paper);color:var(--ink);
+    border:1px solid var(--ink);
+    padding:14px 18px;
+    font-family:var(--mono);font-size:11px;line-height:1.75;letter-spacing:.03em;
+    opacity:0;transform:translateY(8px);pointer-events:none;
+    transition:opacity .35s,transform .35s;
+  }
+  .hous-explainer b{color:var(--cobalt);font-weight:700}
+  body.hous-on .hous-explainer{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    .hous-pill,.hous-explainer{transition:none}
+  }
+
+  body.hous-on [data-hous]{
+    position:relative;
+    outline:1px dashed var(--cobalt);
+    outline-offset:7px;
+  }
+  body.hous-on [data-hous]::before{
+    content:"✎ " attr(data-hous);
+    position:absolute;top:-26px;left:-7px;z-index:5;
+    font-family:var(--mono);font-size:8.5px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;
+    color:var(--paper);background:var(--cobalt);
+    padding:3px 8px;white-space:nowrap;line-height:1.4;
+  }
+  body.hous-on .announce[data-hous]{outline-offset:-4px;outline-color:var(--paper)}
+  body.hous-on .announce[data-hous]::before{top:auto;bottom:-11px;left:14px;background:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- announcement bar · the Hous Panel hero use-case -->
+<div class="announce" id="announce" data-hous="Announcement">
+  <span>New arrivals Friday — the fall run of taper pairs lands at 10 a.m. sharp.</span>
+  <button aria-label="Dismiss announcement" onclick="document.getElementById('announce').classList.add('gone')">×</button>
+</div>
+
+<div class="wrap">
+
+  <nav>
+    <a class="wordmark" href="#">KEPT<span>.</span></a>
+    <ul>
+      <li><a href="#goods">The Goods</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#visit">Visit</a></li>
+      <li><a href="#letter">The Letter</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-index rv">
+      <span>Small-Batch Goods</span>
+      <span>Durham, North Carolina</span>
+      <span>Est. 2023</span>
+    </div>
+    <h1 class="rv" data-hous="Headline">Things worth<br><em>keeping.</em></h1>
+    <div class="hero-sub">
+      <p class="rv" data-hous="Intro text">
+        Soap, stoneware, canvas, and wax — made in runs of forty or fewer,
+        sourced within a day's drive of the shop. Nothing on our shelves that
+        we haven't used at home for a year first.
+      </p>
+      <div class="meta rv" data-hous="Hours snippet">
+        <b>Thu–Sun</b> 11a – 6p<br>
+        <b>First Friday</b> open late, til 9<br>
+        19 W Parrish St · Durham, NC
+      </div>
+    </div>
+    <div class="hero-band rv">
+      <div class="ph ink" data-hous="Image slot">
+        <img class="ph-img" src="img/kept-hero.webp" alt="Wooden shop shelf of small-batch goods in cool window light">
+        <span class="cap">Still Life · Full Shelf, Window Light</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="goods">
+    <div class="sec-head rv">
+      <h2>The <em>Fall</em> Run</h2>
+      <span class="eyebrow">Batch 14 · While it lasts</span>
+    </div>
+    <div class="lb-grid rv" data-hous="Products &amp; prices">
+      <div class="item wide">
+        <span class="item-no">No. 01</span>
+        <div class="ph"><img class="ph-img" src="img/kept-01-soap.webp" alt="Three bars of handmade soap on rumpled linen, overhead" loading="lazy">
+        <span class="cap">Still Life · Soap on Linen, Overhead</span></div>
+        <div class="item-meta"><h3>Tallow &amp; Juniper Soap</h3><span class="price">$12</span></div>
+        <p class="item-line">Cold-process, cured eight weeks. The one people drive back for.</p>
+      </div>
+      <div class="item wide">
+        <span class="item-no">No. 02</span>
+        <div class="ph pale"><img class="ph-img" src="img/kept-02-pourover.webp" alt="Stoneware pour-over set mid-brew with thin steam rising" loading="lazy">
+        <span class="cap">Detail · Pour-Over, Steam Rising</span></div>
+        <div class="item-meta"><h3>Stoneware Pour-Over Set</h3><span class="price">$68</span></div>
+        <p class="item-line">Thrown in Saxapahaw. Dripper, carafe, and a cone that fits.</p>
+      </div>
+      <div class="item">
+        <span class="item-no">No. 03</span>
+        <div class="ph ink"><img class="ph-img" src="img/kept-03-tote.webp" alt="Waxed canvas tote with brass rivets against a dark ground" loading="lazy">
+        <span class="cap">Product · Tote Against Dark Ground</span></div>
+        <div class="item-meta"><h3>Waxed Canvas Tote</h3><span class="price">$88</span></div>
+        <p class="item-line">18 oz duck, brass rivets. Improves with abuse.</p>
+      </div>
+      <div class="item">
+        <span class="item-no">No. 04</span>
+        <div class="ph pale"><img class="ph-img" src="img/kept-04-tapers.webp" alt="Pair of beeswax taper candles leaning against a pale wall" loading="lazy">
+        <span class="cap">Still Life · Tapers, Paired</span></div>
+        <div class="item-meta"><h3>Beeswax Taper Pair</h3><span class="price">$24</span></div>
+        <p class="item-line">Hand-dipped, ten-hour burn. Unscented on purpose.</p>
+      </div>
+      <div class="item">
+        <span class="item-no">No. 05</span>
+        <div class="ph"><img class="ph-img" src="img/kept-05-cloth.webp" alt="Close crop of hand-loomed cotton-linen cloth with a cobalt stripe" loading="lazy">
+        <span class="cap">Texture · Loomed Cloth, Close Crop</span></div>
+        <div class="item-meta"><h3>Hand-Loomed Kitchen Cloth</h3><span class="price">$18</span></div>
+        <p class="item-line">Cotton-linen, woven in Hillsborough. Gets softer, not sadder.</p>
+      </div>
+    </div>
+    <p class="lb-note rv"><b>Seconds sale</b> — last Sunday of each run. Odd glazes, crooked wicks, honest prices.</p>
+  </section>
+
+</div><!-- /wrap -->
+
+<section class="story" id="story">
+  <div class="wrap">
+    <div class="story-grid">
+      <div>
+        <span class="eyebrow rv">Our Story</span>
+        <h2 class="rv" data-hous="Story headline">A forty-mile shop in a <em>four-thousand-mile</em> world.</h2>
+        <div data-hous="Story text">
+          <p class="rv">
+            KEPT started as a stall at the Durham farmers' market in 2023 —
+            one folding table, twelve bars of soap, and a rule we still keep:
+            if we can't visit the person who made it, we don't stock it.
+          </p>
+          <p class="rv">
+            Nearly everything in the shop is made within forty miles of
+            Parrish Street. The exceptions are printed on the tag, with the
+            reason why.
+          </p>
+        </div>
+        <div class="story-stats rv">
+          <div class="stat"><b>40 mi</b><span>Sourcing radius</span></div>
+          <div class="stat"><b>≤ 40</b><span>Pieces per run</span></div>
+          <div class="stat"><b>9</b><span>Makers, all named</span></div>
+        </div>
+      </div>
+      <div class="ph ink rv" data-hous="Image slot">
+        <img class="ph-img" src="img/kept-makers.webp" alt="Two makers standing at the open door of their workshop" loading="lazy">
+        <span class="cap">Portrait · Makers, Workshop Door</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <section id="visit">
+    <div class="sec-head rv">
+      <h2>Visit <em>&amp;</em> Stockists</h2>
+      <span class="eyebrow">Parrish Street &amp; beyond</span>
+    </div>
+    <div class="visit-grid">
+      <div class="visit">
+        <address class="rv" data-hous="Address &amp; hours">
+          <b>KEPT Goods Co.</b><br>
+          19 W Parrish Street<br>
+          Durham, NC 27701<br>
+          Thu – Sun · 11a – 6p<br>
+          First Friday · open til 9<br>
+          hello@keptgoods.example
+        </address>
+        <p class="visit-quirk rv" data-hous="Note">Mondays through Wednesdays
+        the door is locked and the lights are on — that's when we make things.</p>
+      </div>
+      <div>
+        <ul class="stockist-list rv" data-hous="Stockist list">
+          <li><span class="name">Bull City Mercantile</span><span class="city">Durham, NC</span></li>
+          <li><span class="name">The Glasshouse</span><span class="city">Raleigh, NC</span></li>
+          <li><span class="name">Field Day Provisions</span><span class="city">Asheville, NC</span></li>
+          <li><span class="name">Common Thread</span><span class="city">Richmond, VA</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="news" id="letter">
+    <div class="news-inner">
+      <div>
+        <h2 class="rv" data-hous="Newsletter headline">One email a month. <em>Nothing else.</em></h2>
+        <p class="news-note rv" data-hous="Newsletter text">Restocks, seconds sales, and what batch 15 will be. No streaks, no urgency, no countdown timers.</p>
+      </div>
+      <form class="news-form rv" onsubmit="return false">
+        <input type="email" placeholder="your@email.example" aria-label="Email address">
+        <button type="submit">Keep me posted →</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <div>
+        KEPT Goods Co.<br>
+        19 W Parrish St, Durham, NC
+      </div>
+      <div>
+        Thu–Sun 11–6<br>
+        First Friday til 9
+      </div>
+      <div>
+        hello@keptgoods.example<br>
+        Batch 14 · Fall
+      </div>
+    </div>
+    <p class="demo-line">
+      A Hous Sites demonstration · Built by SolHous · <a href="https://solhous.com">solhous.com</a><br>
+      All businesses depicted are fictional.
+    </p>
+  </footer>
+
+</div><!-- /wrap -->
+
+<!-- Hous Panel demo toggle -->
+<div class="hous-explainer" role="status">
+  <b>Hous Panel.</b> Content is yours. Design stays ours.
+  Edited from one simple dashboard.
+</div>
+<button class="hous-pill" id="housToggle" aria-pressed="false">
+  <span id="housIcon">✎</span><span id="housLabel">See what you could edit</span>
+</button>
+
+<script>
+(function(){
+  // --- Hous Panel demo toggle ---
+  var pill = document.getElementById('housToggle');
+  var label = document.getElementById('housLabel');
+  var icon = document.getElementById('housIcon');
+  pill.addEventListener('click', function(){
+    var on = document.body.classList.toggle('hous-on');
+    pill.setAttribute('aria-pressed', on);
+    label.textContent = on ? 'Editable regions shown' : 'See what you could edit';
+    icon.textContent = on ? '✓' : '✎';
+  });
+
+  // --- scroll reveals, respectful of reduced motion ---
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -6% 0px'});
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>

@@ -126,6 +126,14 @@ const rooms: {
     p: "The room and the people in it, shot with the same eye. Listings, storefronts, and headshots across the Triad.",
   },
   {
+    href: "/hous-sites/",
+    img: "/media/studio/studio-07.jpg",
+    alt: "A flat-lay of an editorial shoot plan in afternoon light: mood board, lighting diagram, shot list, Polaroid, and fabric swatches.",
+    k: "Hous Sites",
+    h: "Your business, art-directed",
+    p: "Editorial websites for small businesses and brands, built like editorials, not templates. Blueprint $500, builds from $3,500.",
+  },
+  {
     href: "/records/",
     img: "/media/records/echoes-of-tomorrow.jpg",
     alt: "Echoes of Tomorrow EP cover art: a stairway rising toward a low sun over water.",
@@ -192,6 +200,7 @@ const jsonLd = {
     { "@type": "Brand", name: "The Anti-Feed" },
     { "@type": "Brand", name: "The Direction Market" },
     { "@type": "Brand", name: "SolHous Spaces" },
+    { "@type": "Brand", name: "Hous Sites" },
     { "@type": "Brand", name: "HousScapes" },
   ],
 };
