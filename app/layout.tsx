@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   // matching the original site where every page's <title> was fully authored.
   title: "SolHous — Editorial Photography & Creative House | Greensboro, NC",
   description:
-    "SolHous is a creative house in Greensboro, North Carolina, built around Studio Hous editorial portrait photography — plus the human-curated Anti-Feed, the Direction Market, Field Notes, Spaces, Cosign, and HousScapes. Sessions from $135.",
+    "SolHous is a creative house in Greensboro, North Carolina, built around Studio Hous editorial portrait photography — plus the Direction Market, Field Notes, Spaces, Hous Sites, and HousScapes. Sessions from $135.",
   icons: { icon: "/media/favicon.png" },
 };
 

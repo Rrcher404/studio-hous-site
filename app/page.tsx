@@ -349,8 +349,8 @@ export default function HomePage() {
                 <span className="k">Recognition over reach</span>
                 <h3>Credit is written out</h3>
                 <p>
-                  Field Notes documents the people doing the work. Cosign recognizes the organizations
-                  behind them. Names attached, always.
+                  Field Notes documents the people doing the work, twice a month, in their own
+                  words. Names attached, always.
                 </p>
               </div>
             </div>
