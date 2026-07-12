@@ -583,5 +583,22 @@ main{animation:room-in .35s var(--ease) both;}
 .msgw-fallback a{color:var(--sun);}
 .msgw-done{padding:2px 0 2px;}
 .msgw-again{margin-top:15px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;}
+/* conversation view */
+.msgw-panel{display:flex;flex-direction:column;max-height:calc(100dvh - 130px);}
+.msgw-launch{position:relative;}
+.msgw-dot{position:absolute;top:-1px;right:-1px;width:13px;height:13px;border-radius:50%;background:var(--milk);border:2px solid var(--haze);}
+.msgw-thread{margin-top:14px;flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:3px;}
+.msgw-b{max-width:88%;}
+.msgw-b-you{align-self:flex-end;text-align:right;}
+.msgw-b-studio{align-self:flex-start;}
+.msgw-b-who{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);display:block;margin-bottom:3px;}
+.msgw-b-body{display:inline-block;text-align:left;font-family:'Cormorant Garamond',serif;font-size:16px;line-height:1.42;color:var(--milk);background:rgba(237,239,224,.05);border:1px solid var(--glass-border);padding:9px 12px;border-radius:11px;white-space:pre-wrap;overflow-wrap:anywhere;}
+.msgw-b-you .msgw-b-body{background:rgba(206,168,96,.14);border-color:var(--glass-sun-edge);}
+.msgw-hint{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--olive);line-height:1.6;text-transform:uppercase;}
+.msgw-reply{display:flex;gap:8px;align-items:flex-end;margin-top:12px;border-top:1px solid var(--glass-border);padding-top:12px;}
+.msgw-reply textarea{flex:1 1 auto;min-width:0;background:transparent;border:none;border-bottom:1px solid var(--olive);padding:6px 2px;font-family:'Cormorant Garamond',serif;font-size:16px;line-height:1.4;color:var(--milk);resize:none;border-radius:0;}
+.msgw-reply textarea:focus{border-bottom-color:var(--sun);}
+.msgw-reply textarea::placeholder{color:rgba(164,172,142,.55);}
+.msgw-reply .msgw-send{margin-top:0;flex:0 0 auto;padding:7px 16px;font-size:16px;}
 @media(max-width:560px){.msgw{right:14px;bottom:14px;}.stamp{display:none;}}
 @media (prefers-reduced-motion:reduce){.msgw-launch:hover,.msgw-send:hover{transform:none;}}

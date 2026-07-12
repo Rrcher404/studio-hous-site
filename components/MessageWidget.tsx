@@ -1,24 +1,44 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * Persistent "Message the studio" widget — a collapsed circle on every page that
- * opens into a compact note composer. It posts to the SAME hardened intake as the
- * /contact page (POST /api/contact/ → create_message RPC: honeypot + per-IP
- * rate-limit + host-resolved tenant), so there is no new backend surface.
+ * opens into a compact composer, and then into an ongoing conversation.
  *
- * Two smart touches over a plain email box:
- *  - subject is set automatically from the page the visitor is on, so the inbox
- *    thread reads "Message from Hous Sites" — triage context for free.
- *  - after a successful send we remember it (localStorage) so a returning visitor
- *    sees a warm confirmation line, not a blank form.
+ * First contact posts to the same hardened intake as /contact (POST /api/contact/
+ * → create_message: honeypot + per-IP rate-limit + host-resolved tenant), which
+ * returns the thread's reply_token. We remember that token (localStorage) so a
+ * returning visitor sees the studio's reply right here and can write back in-widget
+ * (POST /api/conversation → append_visitor_message). No account, no new tables.
+ * The token is an unguessable capability the visitor already holds via their email
+ * Reply-To; the read/append RPCs are pinned to it, so a request only ever touches
+ * that one thread.
  *
- * Kept to email + message, as asked. Non-modal (doesn't trap the page); Esc and
- * the launcher both close it; honors prefers-reduced-motion.
+ * Subject on first contact is set from the page ("Message from Hous Sites") for
+ * studio triage. Non-modal; Esc/launcher/× close; honors prefers-reduced-motion.
  */
 
 const STORE_KEY = "solhous_msg_v1";
+
+type Store = { token?: string; email?: string; seenAt?: number };
+type Msg = { from: "you" | "studio"; body: string; at: string };
+type Mode = "form" | "convo" | "done";
+
+function readStore(): Store {
+  try {
+    return JSON.parse(localStorage.getItem(STORE_KEY) || "{}") as Store;
+  } catch {
+    return {};
+  }
+}
+function writeStore(s: Store) {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(s));
+  } catch {
+    /* blocked — widget still works, just won't remember */
+  }
+}
 
 function pageLabel(path: string): string {
   if (!path || path === "/") return "the homepage";
@@ -29,6 +49,9 @@ function pageLabel(path: string): string {
     .map((w) => (w ? w.charAt(0).toUpperCase() + w.slice(1) : w))
     .join(" ");
 }
+
+const latestStudioAt = (ms: Msg[]) =>
+  ms.reduce((mx, m) => (m.from === "studio" ? Math.max(mx, new Date(m.at).getTime()) : mx), 0);
 
 const ChatIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -43,47 +66,92 @@ const CloseIcon = () => (
 
 export function MessageWidget() {
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<Mode>("form");
+  const [token, setToken] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Msg[]>([]);
   const [form, setForm] = useState({ email: "", message: "", company: "" });
+  const [reply, setReply] = useState("");
   const [err, setErr] = useState("");
-  const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [busy, setBusy] = useState(false);
+  const [hasUnseen, setHasUnseen] = useState(false);
   const [priorEmail, setPriorEmail] = useState<string | null>(null);
   const launchRef = useRef<HTMLButtonElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const loadConvo = useCallback(async (tok: string, markSeen: boolean) => {
     try {
-      const raw = localStorage.getItem(STORE_KEY);
-      if (raw) {
-        const v = JSON.parse(raw) as { email?: string };
-        if (v?.email) setPriorEmail(v.email);
+      const res = await fetch(`/api/conversation?token=${encodeURIComponent(tok)}`);
+      const data = await res.json();
+      if (!data?.ok || !Array.isArray(data.messages)) return;
+      if (data.messages.length === 0) {
+        // thread no longer exists — fall back to a fresh note
+        setToken(null);
+        setMode("form");
+        writeStore({ email: readStore().email });
+        return;
+      }
+      setMessages(data.messages as Msg[]);
+      const s = readStore();
+      if (markSeen) {
+        writeStore({ ...s, token: tok, seenAt: Date.now() });
+        setHasUnseen(false);
+      } else {
+        setHasUnseen(latestStudioAt(data.messages) > (s.seenAt ?? 0));
       }
     } catch {
-      /* localStorage blocked — fine, widget still works */
+      /* offline — leave state as is */
     }
   }, []);
 
+  // On mount: recall a prior thread and pull its conversation quietly.
+  useEffect(() => {
+    const s = readStore();
+    if (s.email) setPriorEmail(s.email);
+    if (s.token) {
+      setToken(s.token);
+      setMode("convo");
+      loadConvo(s.token, false);
+    }
+  }, [loadConvo]);
+
+  function close() {
+    setOpen(false);
+    launchRef.current?.focus();
+  }
+
+  // While open: Esc to close, focus the form, and in a conversation refresh +
+  // mark seen, then poll gently for the studio's replies.
   useEffect(() => {
     if (!open) return;
-    const t = setTimeout(() => emailRef.current?.focus(), 40);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        launchRef.current?.focus();
-      }
+      if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
+    let timer: ReturnType<typeof setInterval> | undefined;
+    if (mode === "convo" && token) {
+      loadConvo(token, true);
+      timer = setInterval(() => loadConvo(token, true), 25000);
+    } else if (mode === "form") {
+      setTimeout(() => emailRef.current?.focus(), 40);
+    }
     return () => {
-      clearTimeout(t);
       window.removeEventListener("keydown", onKey);
+      if (timer) clearInterval(timer);
     };
-  }, [open]);
+  }, [open, mode, token, loadConvo]);
 
-  const set =
+  // Keep the newest message in view.
+  useEffect(() => {
+    if (open && mode === "convo") endRef.current?.scrollIntoView({ block: "end" });
+  }, [messages, open, mode]);
+
+  const setField =
     (k: keyof typeof form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  async function submit(e: React.FormEvent) {
+  async function submitForm(e: React.FormEvent) {
     e.preventDefault();
     if (!form.email.trim() || !/.+@.+\..+/.test(form.email)) {
       setErr("An email so we can write back.");
@@ -95,8 +163,9 @@ export function MessageWidget() {
       return;
     }
     setErr("");
-    setState("sending");
+    setBusy(true);
     const path = typeof window !== "undefined" ? window.location.pathname : "/";
+    const firstBody = form.message.trim();
     try {
       const res = await fetch("/api/contact/", {
         method: "POST",
@@ -105,36 +174,58 @@ export function MessageWidget() {
           name: "",
           email: form.email,
           subject: `Message from ${pageLabel(path)}`,
-          message: form.message,
+          message: firstBody,
           company: form.company,
         }),
       });
-      if (res.ok) {
-        setState("done");
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && typeof data?.token === "string") {
+        setToken(data.token);
+        setMessages([{ from: "you", body: firstBody, at: new Date().toISOString() }]);
+        setMode("convo");
         setPriorEmail(form.email);
-        try {
-          localStorage.setItem(STORE_KEY, JSON.stringify({ email: form.email, at: Date.now() }));
-        } catch {
-          /* ignore */
-        }
+        writeStore({ token: data.token, email: form.email, seenAt: Date.now() });
+        setForm({ email: "", message: "", company: "" });
+      } else if (res.ok) {
+        // accepted but no thread token (spam/rate-limited path) — soft confirm
+        setPriorEmail(form.email);
+        writeStore({ ...readStore(), email: form.email });
+        setMode("done");
       } else {
-        setState("error");
+        setErr("Something hiccuped. Try again, or email studio@solhous.com.");
       }
     } catch {
-      setState("error");
+      setErr("Something hiccuped. Try again, or email studio@solhous.com.");
     }
+    setBusy(false);
   }
 
-  function reset() {
-    setForm({ email: "", message: "", company: "" });
-    setErr("");
-    setState("idle");
+  async function submitReply(e: React.FormEvent) {
+    e.preventDefault();
+    const body = reply.trim();
+    if (!body || !token || busy) return;
+    setBusy(true);
+    setMessages((m) => [...m, { from: "you", body, at: new Date().toISOString() }]);
+    setReply("");
+    try {
+      await fetch("/api/conversation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, message: body }),
+      });
+      await loadConvo(token, true);
+    } catch {
+      /* leave the optimistic message; next poll reconciles */
+    }
+    setBusy(false);
   }
 
-  function close() {
-    setOpen(false);
-    launchRef.current?.focus();
-  }
+  const awaitingReply = mode === "convo" && !messages.some((m) => m.from === "studio");
+  const launchLabel = open
+    ? "Close message box"
+    : hasUnseen
+    ? "Message the studio — new reply waiting"
+    : "Message the studio";
 
   return (
     <div className="msgw" data-open={open ? "true" : "false"}>
@@ -145,13 +236,53 @@ export function MessageWidget() {
           </button>
           <p className="msgw-kick">Message the studio</p>
 
-          {state === "done" ? (
+          {mode === "convo" ? (
+            <>
+              <p className="msgw-lead">The studio.</p>
+              <p className="msgw-sub">
+                We reply here and by email{priorEmail ? ` (${priorEmail})` : ""}.
+              </p>
+              <div className="msgw-thread">
+                {messages.map((m, i) => (
+                  <div key={i} className={`msgw-b msgw-b-${m.from}`}>
+                    <span className="msgw-b-who">{m.from === "you" ? "You" : "SolHous"}</span>
+                    <p className="msgw-b-body">{m.body}</p>
+                  </div>
+                ))}
+                {awaitingReply && (
+                  <p className="msgw-hint">Sent. We&rsquo;ll reply right here — and to your email.</p>
+                )}
+                <div ref={endRef} />
+              </div>
+              <form className="msgw-reply" onSubmit={submitReply}>
+                <textarea
+                  rows={2}
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                  placeholder="Write back…"
+                  aria-label="Your reply"
+                />
+                <button type="submit" className="msgw-send" disabled={busy || !reply.trim()}>
+                  {busy ? "…" : "Send ›"}
+                </button>
+              </form>
+            </>
+          ) : mode === "done" ? (
             <div className="msgw-done">
               <p className="msgw-lead">Your note&rsquo;s in.</p>
               <p className="msgw-sub">
-                We read every one and reply by email — to {priorEmail}. Usually within a day.
+                We read every one and reply by email{priorEmail ? ` — to ${priorEmail}` : ""}. Usually
+                within a day.
               </p>
-              <button type="button" className="msgw-again linklike" onClick={reset}>
+              <button
+                type="button"
+                className="msgw-again linklike"
+                onClick={() => {
+                  setErr("");
+                  setForm({ email: "", message: "", company: "" });
+                  setMode("form");
+                }}
+              >
                 Send another &rsaquo;
               </button>
             </div>
@@ -162,7 +293,7 @@ export function MessageWidget() {
                 We read every one and reply by email, usually within a day.
                 {priorEmail ? ` Last time we wrote to ${priorEmail}.` : ""}
               </p>
-              <form className="msgw-form" noValidate onSubmit={submit}>
+              <form className="msgw-form" noValidate onSubmit={submitForm}>
                 <label htmlFor="msgw_email">Your email</label>
                 <input
                   id="msgw_email"
@@ -171,7 +302,7 @@ export function MessageWidget() {
                   autoComplete="email"
                   aria-required="true"
                   value={form.email}
-                  onChange={set("email")}
+                  onChange={setField("email")}
                   placeholder="you@email.com"
                 />
                 <label htmlFor="msgw_message">Your message</label>
@@ -180,10 +311,9 @@ export function MessageWidget() {
                   rows={3}
                   aria-required="true"
                   value={form.message}
-                  onChange={set("message")}
+                  onChange={setField("message")}
                   placeholder="Tell us what you have in mind."
                 />
-                {/* honeypot — hidden from people, dropped server-side */}
                 <div aria-hidden="true" className="msgw-hp">
                   <label htmlFor="msgw_company">Company</label>
                   <input
@@ -192,21 +322,15 @@ export function MessageWidget() {
                     tabIndex={-1}
                     autoComplete="off"
                     value={form.company}
-                    onChange={set("company")}
+                    onChange={setField("company")}
                   />
                 </div>
                 <div className="msgw-err" role="alert">
                   {err}
                 </div>
-                <button type="submit" className="msgw-send" disabled={state === "sending"}>
-                  {state === "sending" ? "Sending…" : "Send it ›"}
+                <button type="submit" className="msgw-send" disabled={busy}>
+                  {busy ? "Sending…" : "Send it ›"}
                 </button>
-                {state === "error" && (
-                  <p className="msgw-fallback" role="status">
-                    Something hiccuped. Write us at{" "}
-                    <a href="mailto:studio@solhous.com">studio@solhous.com</a>.
-                  </p>
-                )}
               </form>
             </>
           )}
@@ -219,12 +343,13 @@ export function MessageWidget() {
         className="msgw-launch"
         aria-expanded={open}
         aria-controls="msgw-panel"
-        aria-label={open ? "Close message box" : "Message the studio"}
+        aria-label={launchLabel}
         onClick={() => setOpen((o) => !o)}
       >
         <span className="msgw-ico" aria-hidden="true">
           {open ? <CloseIcon /> : <ChatIcon />}
         </span>
+        {hasUnseen && !open && <span className="msgw-dot" aria-hidden="true" />}
       </button>
     </div>
   );

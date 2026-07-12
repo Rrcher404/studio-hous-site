@@ -62,5 +62,14 @@ export async function POST(request: Request) {
   if (!res.ok) {
     return Response.json({ ok: false, error: "Could not send just now — please email studio@solhous.com." }, { status: 502 });
   }
-  return Response.json({ ok: true });
+  // create_message returns the thread's reply_token (or null on a dropped/spam/
+  // rate-limited path). The widget stores it to show the ongoing conversation.
+  let token: string | null = null;
+  try {
+    const data = await res.json();
+    if (typeof data === "string" && /^[0-9a-f]{12,}$/.test(data)) token = data;
+  } catch {
+    /* no body — fine */
+  }
+  return Response.json({ ok: true, token });
 }
