@@ -587,6 +587,8 @@ main{animation:room-in .35s var(--ease) both;}
 .msgw-panel{display:flex;flex-direction:column;max-height:calc(100dvh - 130px);}
 .msgw-launch{position:relative;}
 .msgw-dot{position:absolute;top:-1px;right:-1px;width:13px;height:13px;border-radius:50%;background:var(--milk);border:2px solid var(--haze);}
+.msgw-dot::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--milk);animation:msgw-ping 1.8s var(--ease) infinite;}
+@keyframes msgw-ping{0%{transform:scale(1);opacity:.7;}70%,100%{transform:scale(2.1);opacity:0;}}
 .msgw-thread{margin-top:14px;flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:3px;}
 .msgw-b{max-width:88%;}
 .msgw-b-you{align-self:flex-end;text-align:right;}
@@ -601,4 +603,4 @@ main{animation:room-in .35s var(--ease) both;}
 .msgw-reply textarea::placeholder{color:rgba(164,172,142,.55);}
 .msgw-reply .msgw-send{margin-top:0;flex:0 0 auto;padding:7px 16px;font-size:16px;}
 @media(max-width:560px){.msgw{right:14px;bottom:14px;}.stamp{display:none;}}
-@media (prefers-reduced-motion:reduce){.msgw-launch:hover,.msgw-send:hover{transform:none;}}
+@media (prefers-reduced-motion:reduce){.msgw-launch:hover,.msgw-send:hover{transform:none;}.msgw-dot::after{animation:none;display:none;}}

@@ -78,6 +78,12 @@ export function MessageWidget() {
   const launchRef = useRef<HTMLButtonElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
+  // Live mirror of `open` so the single background poll reads the current
+  // state without tearing down and rebuilding its interval on every toggle.
+  const openRef = useRef(open);
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
 
   const loadConvo = useCallback(async (tok: string, markSeen: boolean) => {
     try {
@@ -120,26 +126,46 @@ export function MessageWidget() {
     launchRef.current?.focus();
   }
 
-  // While open: Esc to close, focus the form, and in a conversation refresh +
-  // mark seen, then poll gently for the studio's replies.
+  // While open: Esc to close, focus the form, and on entering a conversation
+  // refresh once and mark it seen. The background poll below keeps it live.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
-    let timer: ReturnType<typeof setInterval> | undefined;
     if (mode === "convo" && token) {
       loadConvo(token, true);
-      timer = setInterval(() => loadConvo(token, true), 25000);
     } else if (mode === "form") {
       setTimeout(() => emailRef.current?.focus(), 40);
     }
     return () => {
       window.removeEventListener("keydown", onKey);
-      if (timer) clearInterval(timer);
     };
   }, [open, mode, token, loadConvo]);
+
+  // Background poll — the heart of the live refresh. Whenever a thread exists,
+  // check for the studio's replies on a gentle cadence *regardless of whether
+  // the bubble is open*, so a fresh reply lights the notification dot without a
+  // page reload. Open → mark seen and the thread updates in place; closed →
+  // just flip hasUnseen. Pauses on hidden tabs and refreshes the instant the
+  // visitor looks back at the tab.
+  useEffect(() => {
+    if (mode !== "convo" || !token) return;
+    const poll = () => {
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+      loadConvo(token, openRef.current);
+    };
+    const id = setInterval(poll, 12000);
+    const onVis = () => {
+      if (document.visibilityState === "visible") poll();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [mode, token, loadConvo]);
 
   // Keep the newest message in view.
   useEffect(() => {
