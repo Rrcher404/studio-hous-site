@@ -89,16 +89,22 @@ export function Nav() {
                   </span>
                 </button>
                 <div className="dropdown glass distort" aria-label={group.label}>
-                  {group.links.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      data-h
-                      aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
+                  {group.links.map((link) =>
+                    link.external ? (
+                      <a key={link.href} href={link.href} data-h target="_blank" rel="noopener noreferrer">
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        data-h
+                        aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
+                      >
+                        {link.label}
+                      </Link>
+                    )
+                  )}
                 </div>
               </div>
             );
@@ -146,15 +152,21 @@ export function Nav() {
         {NAV_GROUPS.slice(1).map((group) => (
           <div key={group.label} style={{ display: "contents" }}>
             <p className="grp">{group.mobileLabel}</p>
-            {group.links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {group.links.map((link) =>
+              link.external ? (
+                <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActivePath(link.href, pathname) ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </div>
         ))}
       </div>

@@ -1,4 +1,4 @@
-export type NavLink = { href: string; label: string };
+export type NavLink = { href: string; label: string; external?: boolean };
 export type NavGroup = { label: string; mobileLabel: string; links: NavLink[] };
 
 /** Desktop nav renders these as two dropdown tabs; the mobile menu renders them as groups. */
@@ -21,6 +21,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/housscapes/", label: "HousScapes" },
       { href: "/spaces/", label: "Spaces" },
       { href: "/hous-sites/", label: "Hous Sites" },
+      { href: "https://panel.solhous.com/", label: "Hous Panel", external: true },
       { href: "/contact/", label: "Contact" },
     ],
   },

@@ -32,11 +32,17 @@ export function Footer({
       </div>
       <div className="fnav">
         <Link href="/">Home</Link>
-        {NAV.map((link) => (
-          <Link key={link.href} href={link.href}>
-            {link.label}
-          </Link>
-        ))}
+        {NAV.map((link) =>
+          link.external ? (
+            <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
+              {link.label}
+            </a>
+          ) : (
+            <Link key={link.href} href={link.href}>
+              {link.label}
+            </Link>
+          )
+        )}
       </div>
       <p className="legal">
         {legal} <span style={{ color: "var(--sun)" }}>&apos;26 7 2</span>
