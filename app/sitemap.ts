@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/spaces/", priority: 0.7 },
     { path: "/housscapes/", priority: 0.7 },
     { path: "/hous-sites/", priority: 0.7 },
+    { path: "/book/", priority: 0.7 },
     { path: "/contact/", priority: 0.6 },
     { path: "/privacy/", priority: 0.3 },
   ];
