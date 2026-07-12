@@ -21,6 +21,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/housscapes/", label: "HousScapes" },
       { href: "/spaces/", label: "Spaces" },
       { href: "/hous-sites/", label: "Hous Sites" },
+      { href: "/contact/", label: "Contact" },
     ],
   },
 ];

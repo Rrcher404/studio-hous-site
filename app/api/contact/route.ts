@@ -1,16 +1,12 @@
 import { createHash } from "node:crypto";
 
 /**
- * Website message intake. A visitor's message becomes a form_submissions row
- * (form_key='message'); a SECURITY DEFINER trigger in Supabase validates it,
- * drops honeypot/rate-limited spam, and promotes it into the Panel inbox.
- *
- * This route sets client_id SERVER-SIDE (never from the caller) and posts with
- * the anon key under the existing public_submit RLS policy — no service-role in
- * the site. Single-tenant today; before a second tenant, resolve client_id from
- * the request host and move intake behind a definer RPC (see the suite roadmap).
+ * Website message intake → Panel inbox. Posts to the create_message() SECURITY
+ * DEFINER RPC, which resolves client_id from the site's own domain (never from
+ * the caller), validates, drops honeypot + rate-limited spam, and creates the
+ * thread. Anon key only — no service-role in the site.
  */
-const TENANT_ID = "f5ad4cdb-5e9f-4f15-ab87-c3542e14260a"; // solhous — matches lib/content.ts
+const SITE_DOMAIN = "solhous.com";
 
 export async function POST(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -45,18 +41,21 @@ export async function POST(request: Request) {
     .digest("hex")
     .slice(0, 24);
 
-  const res = await fetch(`${url}/rest/v1/form_submissions`, {
+  const res = await fetch(`${url}/rest/v1/rpc/create_message`, {
     method: "POST",
     headers: {
       apikey: key,
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
-      Prefer: "return=minimal",
     },
     body: JSON.stringify({
-      client_id: TENANT_ID,
-      form_key: "message",
-      payload: { name, email, message, subject, company, ip_hash: ipHash },
+      p_domain: SITE_DOMAIN,
+      p_name: name,
+      p_email: email,
+      p_subject: subject,
+      p_message: message,
+      p_company: company,
+      p_ip_hash: ipHash,
     }),
   });
 
