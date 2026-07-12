@@ -9,6 +9,7 @@ import { BookingModalProvider } from "@/components/BookingModal";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Announcement } from "@/components/Announcement";
 import { Analytics } from "@/components/Analytics";
+import { MessageWidget } from "@/components/MessageWidget";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Announcement />
         <CookieConsent />
         <Analytics />
+        <MessageWidget />
       </body>
     </html>
   );
