@@ -11,15 +11,12 @@ import {
   type ReactNode,
 } from "react";
 
-/* Booking inquiries POST into this Google Form → linked Google Sheet on studio@solhous.com */
-const GFORM_ACTION =
-  "https://docs.google.com/forms/d/e/1FAIpQLSfkItbZbYVKJgyJ4VbdlAcnksgkI8LVgyycZ_ZgrMk2Vs4PyA/formResponse";
-const GFORM_FIELDS = {
-  date: "entry.919456358",
-  name: "entry.1143871970",
-  occasion: "entry.1962162448",
-  contact: "entry.1852360780",
-};
+/**
+ * Booking inquiries POST to /api/book/ → the request_booking() intake → the Hous
+ * Panel Bookings queue (confirm/decline, deposit link, flows into Agenda). No
+ * Google Forms. On a network failure the confirmation step offers a mailto
+ * fallback so a request is never simply lost.
+ */
 
 type BookingContextValue = { open: () => void };
 const BookingContext = createContext<BookingContextValue | null>(null);
@@ -53,15 +50,23 @@ type Step = 0 | 1 | 2 | 3 | 4;
 export function BookingModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>(0);
-  const [values, setValues] = useState({ date: "", name: "", occasion: "", contact: "" });
+  const [values, setValues] = useState({
+    date: "",
+    name: "",
+    occasion: "",
+    email: "",
+    phone: "",
+    company: "", // honeypot — must stay empty
+  });
   const [errors, setErrors] = useState<Record<number, string>>({});
+  const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState<boolean | null>(null);
   const lastFocusRef = useRef<HTMLElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const dateInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const occasionInputRef = useRef<HTMLInputElement>(null);
-  const contactInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
   const shutterRef = useRef<HTMLDivElement>(null);
 
   const reduceMotion =
@@ -99,7 +104,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
       0: dateInputRef.current,
       1: nameInputRef.current,
       2: occasionInputRef.current,
-      3: contactInputRef.current,
+      3: emailInputRef.current,
     };
     const el = focusMap[step];
     if (el) {
@@ -109,33 +114,34 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
   }, [isOpen, step]);
 
   const submit = useCallback(() => {
-    const contact = values.contact.trim();
-    if (!contact) {
-      setErrors((e) => ({ ...e, 3: "A phone or email so I can reach you." }));
+    const email = values.email.trim();
+    if (!email || !/.+@.+\..+/.test(email)) {
+      setErrors((e) => ({ ...e, 3: "An email so I can reply." }));
+      emailInputRef.current?.focus();
       return;
     }
-    const d = values.date.trim();
-    const n = values.name.trim();
-    const o = values.occasion.trim();
-
-    const fd = new URLSearchParams();
-    fd.append(GFORM_FIELDS.date, d);
-    fd.append(GFORM_FIELDS.name, n);
-    fd.append(GFORM_FIELDS.occasion, o);
-    fd.append(GFORM_FIELDS.contact, contact);
-
-    fetch(GFORM_ACTION, {
+    setBusy(true);
+    fetch("/api/book/", {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: fd.toString(),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "", // studio categorizes on confirm; the occasion below is the clue
+        name: values.name.trim(),
+        email,
+        phone: values.phone.trim(),
+        dates: values.date.trim(),
+        notes: values.occasion.trim(),
+        company: values.company, // honeypot
+      }),
     })
-      .then(() => {
-        setSent(true);
+      .then((r) => {
+        setBusy(false);
+        setSent(r.ok);
         if (!reduceMotion) fire();
         setStep(4);
       })
       .catch(() => {
+        setBusy(false);
         setSent(false);
         if (!reduceMotion) fire();
         setStep(4);
@@ -186,7 +192,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
   const n = values.name.trim();
   const d = values.date.trim();
   const mailBody =
-    `Day: ${d}\nName: ${n}\nOccasion: ${values.occasion.trim()}\nReach me: ${values.contact.trim()}`;
+    `Day: ${d}\nName: ${n}\nOccasion: ${values.occasion.trim()}\nEmail: ${values.email.trim()}\nPhone: ${values.phone.trim()}`;
   const mailHref = `mailto:studio@solhous.com?subject=${encodeURIComponent(
     "Booking inquiry — " + (n || "new")
   )}&body=${encodeURIComponent("Hi Studio Hous,\n\nI'd like to hold a date.\n\n" + mailBody + "\n\nThank you!")}`;
@@ -313,14 +319,16 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
 
             <div className={`step${step === 3 ? " active" : ""}`} data-step="3">
               <div className="ask">Where do I reach you?</div>
-              <div className="hint">A text, not a form letter. Email or phone.</div>
+              <div className="hint">A text, not a form letter. Your email — a phone too, if you like.</div>
               <input
-                id="f_contact"
-                ref={contactInputRef}
-                placeholder="Phone or email"
+                id="f_email"
+                ref={emailInputRef}
+                type="email"
+                inputMode="email"
+                placeholder="you@email.com"
                 autoComplete="email"
-                value={values.contact}
-                onChange={(e) => setField("contact", e.target.value, 3)}
+                value={values.email}
+                onChange={(e) => setField("email", e.target.value, 3)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -328,29 +336,53 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                   }
                 }}
               />
+              <input
+                id="f_phone"
+                type="tel"
+                inputMode="tel"
+                placeholder="Phone (optional)"
+                autoComplete="tel"
+                value={values.phone}
+                onChange={(e) => setField("phone", e.target.value, 3)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    submit();
+                  }
+                }}
+                style={{ marginTop: 10 }}
+              />
+              {/* Honeypot — hidden from people, catnip for bots; request_booking rejects if filled. */}
+              <input
+                aria-hidden="true"
+                tabIndex={-1}
+                autoComplete="off"
+                name="company"
+                value={values.company}
+                onChange={(e) => setValues((v) => ({ ...v, company: e.target.value }))}
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+              />
               <div className="err" id="e3">
                 {errors[3]}
               </div>
               <div className="row">
                 <span className="sc">The line · 4 / 4</span>
-                <button className="next" id="sh-submitBtn" onClick={submit}>
-                  Hold my date ›
+                <button className="next" id="sh-submitBtn" onClick={submit} disabled={busy}>
+                  {busy ? "Sending…" : "Hold my date ›"}
                 </button>
               </div>
             </div>
 
             <div className={`step${step === 4 ? " active" : ""}`} data-step="4">
               <div className="ask" id="sh-confirmMsg">
-                {sent
-                  ? `Got it${n ? ", " + n : ""}.`
-                  : "One more tap."}
+                {sent ? `Got it${n ? ", " + n : ""}.` : "One more tap."}
               </div>
               <div className="hint" id="sh-confirmSmall">
                 {sent
                   ? `Your request reached Studio Hous. I'll respond within 24 business hours with availability for ${
                       d || "your day"
                     }, your styling guide, and the next step. Nothing's locked until you are.`
-                  : "Your email app will open with everything filled in — just hit send and it reaches Studio Hous. I'll reply within 24 business hours."}
+                  : "That didn't send — your email app can open with everything filled in, just hit send. Or email studio@solhous.com. I'll reply within 24 business hours."}
               </div>
               <div className="row">
                 <span className="sc">See you soon</span>
