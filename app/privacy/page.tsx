@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Privacy — SolHous",
   description:
-    "How SolHous handles your information: what we collect, why, how long we keep it, and the choices you have. No analytics or tracking cookies without your OK.",
+    "How SolHous handles your information: what we collect, why, how long we keep it, and the choices you have. No tracking cookies, and only cookieless, anonymous page counts.",
   alternates: { canonical: "https://solhous.com/privacy/" },
   openGraph: {
     title: "Privacy — SolHous",
@@ -47,9 +47,10 @@ export default function PrivacyPage() {
               forms, we receive what you type: your name, email or phone, dates, and whatever you
               tell us about the occasion. When you email us directly, we receive your email. Our
               hosting provider keeps standard server logs (IP address, browser type, pages
-              requested) to keep the site running and secure. That is the whole list. We run no
-              analytics and set no tracking cookies today; the only thing stored in your browser is
-              your cookie choice itself.
+              requested) to keep the site running and secure. That is the whole list. We keep a
+              privacy-friendly, cookieless page-view count that records only which pages get
+              visited — no cookies, no identifiers, nothing tied to you personally — and the only
+              thing stored in your browser is your cookie choice itself.
             </p>
           </Reveal>
         </section>
@@ -92,11 +93,11 @@ export default function PrivacyPage() {
               A short <em>list.</em>
             </h2>
             <p className="muted">
-              Our forms are processed by Google (Forms and Sheets) and land in our studio inbox.
-              The site is hosted on Vercel. Payments, when taken online, run through Stripe — we
-              never see or store your card number. Client sites under Hous Sites care plans store
-              their content with Supabase. Each of these companies processes data under their own
-              privacy terms, on our instructions. We add nothing to this list quietly.
+              Our forms and studio records run on Supabase, which stores your inquiry, booking, and
+              project details. Email notifications reach us through Resend. The site is hosted on
+              Vercel. Payments, when taken online, run through Stripe — we never see or store your
+              card number. Each of these companies processes data under their own privacy terms, on
+              our instructions. We add nothing to this list quietly.
             </p>
           </Reveal>
         </section>
@@ -108,10 +109,11 @@ export default function PrivacyPage() {
               Off by <em>default.</em>
             </h2>
             <p className="muted">
-              We do not load analytics or trackers without your OK. Essential storage — the kind
-              that remembers your cookie choice or makes a form work — is always on. You can change
-              your answer anytime under Cookie Settings in the footer. If we ever add analytics, it
-              loads only for visitors who accepted, and this page will say so first.
+              We set no tracking cookies and load no third-party trackers. Our only measurement is
+              a cookieless page-view count that stores nothing in your browser and identifies no
+              one. Essential storage — the kind that remembers your cookie choice or makes a form
+              work — is always on. You can change your answer anytime under Cookie Settings in the
+              footer.
             </p>
           </Reveal>
         </section>

@@ -50,6 +50,8 @@ export function Footer({
       <p className="legal-links">
         <Link href="/privacy/">Privacy</Link>
         <span aria-hidden="true"> · </span>
+        <Link href="/terms/">Terms</Link>
+        <span aria-hidden="true"> · </span>
         <CookieSettingsLink />
       </p>
     </footer>
